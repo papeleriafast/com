@@ -1805,62 +1805,66 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
 
 
 <script>
-let cart=[];
+<script>
+  // Recupera la cantidad de productos del carrito desde localStorage
+  let cantidad = parseInt(localStorage.getItem('carritoCantidad')) || 0;
 
+  // Función para actualizar el contador visual
+  function actualizarContador() {
+    const contador = document.getElementById('contador-carrito');
+    if (contador) {
+      contador.textContent = cantidad;
+      contador.style.display = cantidad > 0 ? 'inline' : 'none';
+    }
+  }
 
-function toggleCart(){ document.getElementById('cart-menu').classList.toggle('active'); }
-function getQty(btn){ return parseInt(btn.parentElement.querySelector('.qty').innerText); }
-function increaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); qty.innerText=parseInt(qty.innerText)+1; }
-function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(parseInt(qty.innerText)>1) qty.innerText=parseInt(qty.innerText)-1; }
+  // Función para agregar productos al carrito
+  function agregarAlCarrito() {
+    cantidad++;
+    localStorage.setItem('carritoCantidad', cantidad);
+    actualizarContador();
+  }
 
+  // Inicializa el contador al cargar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    // Crea el elemento del contador si no existe
+    let carritoLogo = document.querySelector('.carrito');
+    if (carritoLogo && !document.getElementById('contador-carrito')) {
+      let contador = document.createElement('span');
+      contador.id = 'contador-carrito';
+      contador.style.cssText = `
+        background: red;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 2px 6px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        display: none;
+      `;
+      carritoLogo.style.position = 'relative';
+      carritoLogo.appendChild(contador);
+    }
 
-function addToCart(product,price,quantity=1){ cart.push({product,price,quantity}); renderCart(); }
-function removeItem(index){ cart.splice(index,1); renderCart(); }
+    // Actualiza el contador al cargar la página
+    actualizarContador();
 
-
-function renderCart(){
-  const cartItems=document.getElementById('cart-items');
-  const cartTotal=document.getElementById('cart-total');
-  cartItems.innerHTML='';
-  let total=0;
-  cart.forEach((item,index)=>{
-    total+=item.price*item.quantity;
-    cartItems.innerHTML+=`
-      <li>
-        <span>${item.product} x${item.quantity}</span>
-        <div>
-          <span>$${(item.price*item.quantity).toFixed(2)}</span>
-          <button onclick="removeItem(${index})">🗑️</button>
-        </div>
-      </li>`;
-  });
-  cartTotal.innerText=`Total: $${total.toFixed(2)}`;
-}
-
-
-function sendWhatsApp(){
-  if(cart.length===0){ alert('Tu carrito está vacío'); return; }
-  let message="🛒 *Pedido Papelería FAT*:%0A";
-  cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
-  const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
-  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
-  window.open(`https://wa.me/5212321452268?text=${message}`,'_blank');
-}
-
-
-function emptyCart(){ if(cart.length===0){alert("Carrito vacío");return;} if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; renderCart();} }
-
-
-function showDepartment(id,btn){
-  document.querySelectorAll('.products').forEach(sec=>sec.style.display='none');
-  document.getElementById(id).style.display='grid';
-  document.querySelectorAll('.department-buttons button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
+    // Agrega el evento a los botones de "Comprar"
+    const botonesAgregar = document.querySelectorAll('button');
+    botonesAgregar.forEach(boton => {
+      if (boton.textContent.trim() === '+ Comprar') {
+        boton.addEventListener('click', agregarAlCarrito);
+      }
+    });
+  });
+</script>
 </script>
 
 
 </body>
 </html>
+
 
 
