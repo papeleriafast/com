@@ -1804,7 +1804,7 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
 </div>
 
 
-<script>
+
 <script>
   // Recupera la cantidad de productos del carrito desde localStorage
   let cantidad = parseInt(localStorage.getItem('carritoCantidad')) || 0;
@@ -1818,53 +1818,32 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
     }
   }
 
-  // Función para agregar productos al carrito
+  // Función que se llama al agregar un producto
   function agregarAlCarrito() {
     cantidad++;
     localStorage.setItem('carritoCantidad', cantidad);
     actualizarContador();
   }
 
-  // Inicializa el contador al cargar la página
+  // Inicializa al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
-    // Crea el elemento del contador si no existe
-    let carritoLogo = document.querySelector('.carrito');
-    if (carritoLogo && !document.getElementById('contador-carrito')) {
-      let contador = document.createElement('span');
-      contador.id = 'contador-carrito';
-      contador.style.cssText = `
-        background: red;
-        color: white;
-        font-size: 14px;
-        font-weight: bold;
-        border-radius: 50%;
-        padding: 2px 6px;
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        display: none;
-      `;
-      carritoLogo.style.position = 'relative';
-      carritoLogo.appendChild(contador);
-    }
-
-    // Actualiza el contador al cargar la página
     actualizarContador();
 
-    // Agrega el evento a los botones de "Comprar"
-    const botonesAgregar = document.querySelectorAll('button');
+    // Agrega evento a todos los botones "+ Comprar"
+    const botonesAgregar = document.querySelectorAll('.btn-agregar');
     botonesAgregar.forEach(boton => {
-      if (boton.textContent.trim() === '+ Comprar') {
-        boton.addEventListener('click', agregarAlCarrito);
-      }
+      boton.addEventListener('click', agregarAlCarrito);
     });
-  });
-</script>
+  });
+
+
+
 </script>
 
 
 </body>
 </html>
+
 
 
 
