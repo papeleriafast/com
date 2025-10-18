@@ -18,7 +18,21 @@ body { font-family: "Poppins", sans-serif; background: var(--bg); color: #111; }
 header { display:flex; justify-content:space-between; align-items:center; padding:12px 0; position: relative; }
 .logo { display:flex; align-items:center; gap:10px; }
 .logo .mark { width:46px; height:46px; border-radius:8px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); display:flex; justify-content:center; align-items:center; color:white; font-weight:700; }
-.cart-icon { cursor:pointer; background: var(--accent-2); color:white; padding:10px 14px; border-radius:8px; font-weight:700; }
+.cart-icon { cursor:pointer; background: var(--accent-2); color:white; padding:10px 14px; border-radius:8px; font-weight:700; position: relative; } /* Para contador */
+
+
+#contador-carrito {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: none;
+}
 
 
 .cart-menu { display:none; position:absolute; right:0; top:60px; background:var(--card); border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); width:300px; padding:15px; z-index:100; }
@@ -43,7 +57,7 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 .products {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 productos por fila */
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-top:20px;
   justify-items: center;
@@ -52,14 +66,8 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 }
 
 
-@media(max-width:900px) { 
-  .products { grid-template-columns: repeat(2, 1fr); } /* 2 productos por fila tablet */
-}
-
-
-@media(max-width:600px) { 
-  .products { grid-template-columns: 1fr; } /* 1 producto por fila móvil */
-}
+@media(max-width:900px) { .products { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:600px) { .products { grid-template-columns: 1fr; } }
 
 
 .card { background: var(--card); border:1px solid #ddd; border-radius:14px; padding:20px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.05); display:flex; flex-direction:column; justify-content:space-between; }
@@ -76,8 +84,6 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 
 
 footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
-
-
 </style>
 </head>
 <body>
@@ -92,7 +98,9 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
         <div style="font-size:13px; color:var(--muted);">Todo en oficina y escolar</div>
       </div>
     </div>
-    <div class="cart-icon" onclick="toggleCart()">🛒 Tu carrito</div>
+    <div class="cart-icon" onclick="toggleCart()">🛒 Tu carrito
+      <span id="contador-carrito">0</span>
+    </div>
     <div id="cart-menu" class="cart-menu">
       <h3>🛍️ Carrito</h3>
       <ul id="cart-items"></ul>
@@ -100,18 +108,6 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
       <div class="cart-buttons">
         <button class="btn" onclick="sendWhatsApp()">Pagar por WhatsApp</button>
         <button class="btn secondary" onclick="emptyCart()">Vaciar carrito</button>
-        <span id="contador-carrito" style="
-      background: red;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      border-radius: 50%;
-      padding: 2px 6px;
-      position: absolute;
-      top: -10px;
-      right: -10px;
-      display: none;">0</span>
-</div>
       </div>
     </div>
   </header>
@@ -130,8 +126,6 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   <!-- Productos por departamento -->
   <section id="arte" class="products">
     <h2 class="department-title">🎨 Arte y Manualidades</h2>
-
-
 <div class="card">
       <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279285-1200-auto?v=638556536472700000&width=1200&height=auto&aspect=true
        " alt="Plastilina Marqueta 180 g Rojo Smarty
@@ -144,6 +138,9 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
         <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Rojo Smarty',15,getQty(this))">Comprar</button>
       </div>
     </div>
+
+
+
 
 
 
@@ -1810,55 +1807,111 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
   </section>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <footer>
     © 2025 Papelería FAT — Hecho con ❤️ en México
   </footer>
 </div>
 
 
+<script>
+let cart=[];
 
 
-  <script>
-  // Recupera la cantidad de productos del carrito desde localStorage
-  let cantidad = parseInt(localStorage.getItem('carritoCantidad')) || 0;
+function toggleCart(){ document.getElementById('cart-menu').classList.toggle('active'); }
+function getQty(btn){ return parseInt(btn.parentElement.querySelector('.qty').innerText); }
+function increaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); qty.innerText=parseInt(qty.innerText)+1; }
+function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(parseInt(qty.innerText)>1) qty.innerText=parseInt(qty.innerText)-1; }
 
-  // Función para actualizar el contador visual
-  function actualizarContador() {
-    const contador = document.getElementById('contador-carrito');
-    if (contador) {
-      contador.textContent = cantidad;
-      contador.style.display = cantidad > 0 ? 'inline' : 'none';
-    }
-  }
 
-  // Función que se llama al agregar un producto
-  function agregarAlCarrito() {
-    cantidad++;
-    localStorage.setItem('carritoCantidad', cantidad);
-    actualizarContador();
-  }
+function addToCart(product,price,quantity=1){
+  cart.push({product,price,quantity});
+  renderCart();
+}
 
-  // Inicializa al cargar la página
-  document.addEventListener('DOMContentLoaded', function() {
-    actualizarContador();
 
-    // Agrega evento a todos los botones "+ Comprar"
-    const botonesAgregar = document.querySelectorAll('.btn-agregar');
-    botonesAgregar.forEach(boton => {
-      boton.addEventListener('click', agregarAlCarrito);
-    });
+function removeItem(index){ cart.splice(index,1); renderCart(); }
+
+
+function renderCart(){
+  const cartItems=document.getElementById('cart-items');
+  const cartTotal=document.getElementById('cart-total');
+  const contador=document.getElementById('contador-carrito');
+  cartItems.innerHTML='';
+  let total=0;
+  let totalQty=0;
+  cart.forEach((item,index)=>{
+    total+=item.price*item.quantity;
+    totalQty+=item.quantity;
+    cartItems.innerHTML+=`
+      <li>
+        <span>${item.product} x${item.quantity}</span>
+        <div>
+          <span>$${(item.price*item.quantity).toFixed(2)}</span>
+          <button onclick="removeItem(${index})">🗑️</button>
+        </div>
+      </li>`;
   });
+  cartTotal.innerText=`Total: $${total.toFixed(2)}`;
+  if(totalQty>0){ contador.style.display='inline'; contador.innerText=totalQty; }
+  else{ contador.style.display='none'; }
+}
+
+
+function sendWhatsApp(){
+  if(cart.length===0){ alert('Tu carrito está vacío'); return; }
+  let message="🛒 *Pedido Papelería FAT*:%0A";
+  cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
+  const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
+  window.open(`https://wa.me/5212321452268?text=${message}`,'_blank');
+}
+
+
+function emptyCart(){ 
+  if(cart.length===0){alert("Carrito vacío");return;}
+  if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; renderCart();}
+}
+
+
+function showDepartment(id,btn){
+  document.querySelectorAll('.products').forEach(sec=>sec.style.display='none');
+  document.getElementById(id).style.display='grid';
+  document.querySelectorAll('.department-buttons button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
 </script>
-  
-
-
-
-
 </body>
 </html>
-
-
-
-
-
 
