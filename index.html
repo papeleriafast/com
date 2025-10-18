@@ -15,16 +15,42 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 body { font-family: "Poppins", sans-serif; background: var(--bg); color: #111; }
 .container { max-width: 1100px; margin:auto; padding:20px; }
-header { display:flex; justify-content:space-between; align-items:center; padding:12px 0; position:relative;}
+header { display:flex; justify-content:space-between; align-items:center; padding:12px 0; position: relative; }
 .logo { display:flex; align-items:center; gap:10px; }
-.logo .mark { width:46px; height:46px; border-radius:8px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); display:flex; justify-content:center; align-items:center; color:white; font-weight:700; }
-.cart-icon { cursor:pointer; background: var(--accent-2); color:white; padding:10px 14px; border-radius:8px; font-weight:700; position:relative; }
-.cart-icon .cart-count { position:absolute; top:-6px; right:-6px; background:red; color:white; width:18px; height:18px; font-size:12px; font-weight:700; border-radius:50%; display:flex; justify-content:center; align-items:center; }
-.cart-menu { display:none; position:absolute; right:0; top:60px; background:var(--card); border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); width:300px; padding:15px; z-index:100; }
+.logo .mark {
+  width:46px; height:46px; border-radius:8px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  display:flex; justify-content:center; align-items:center;
+  color:white; font-weight:700;
+}
+.cart-icon {
+  cursor:pointer; background: var(--accent-2); color:white;
+  padding:10px 14px; border-radius:8px; font-weight:700; position:relative;
+}
+#contador-carrito {
+  position:absolute;
+  top:-5px; right:-8px;
+  background:#ff7b00;
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:50%;
+  display:none;
+}
+.cart-menu {
+  display:none; position:absolute; right:0; top:60px;
+  background:var(--card); border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.15);
+  width:300px; padding:15px; z-index:100;
+}
 .cart-menu.active { display:block; }
 .cart-menu h3 { color: var(--accent-2); margin-bottom:10px; text-align:center; }
 .cart-menu ul { list-style:none; max-height:200px; overflow-y:auto; padding:0; }
-.cart-menu li { display:flex; justify-content:space-between; align-items:center; margin:6px 0; border-bottom:1px dashed #ccc; padding-bottom:4px; }
+.cart-menu li {
+  display:flex; justify-content:space-between; align-items:center;
+  margin:6px 0; border-bottom:1px dashed #ccc; padding-bottom:4px;
+}
 .cart-menu li button { background:none; border:none; color:#d11a2a; font-size:18px; cursor:pointer; }
 .cart-total { text-align:right; margin-top:8px; color: var(--accent); font-weight:700; }
 .cart-buttons { display:flex; gap:8px; margin-top:10px; flex-direction:column; }
@@ -32,31 +58,79 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 .cart-buttons .btn.secondary { background:#aaa; }
 
 
-.department-buttons { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
-.department-buttons button { padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background: var(--accent-2); color:white; }
+.department-buttons {
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;
+}
+.department-buttons button {
+  padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:600;
+  background: var(--accent-2); color:white;
+}
 .department-buttons button.active { background: var(--accent); }
 
 
-.department-title { font-size:24px; color: var(--accent-2); text-align:left; margin-bottom:16px; border-bottom:2px solid var(--accent); padding-bottom:6px; }
+.department-title {
+  font-size:24px; color: var(--accent-2);
+  text-align:left; margin-bottom:16px;
+  border-bottom:2px solid var(--accent); padding-bottom:6px;
+}
 
 
-.products { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; margin-top:20px; justify-items:center; }
-.card { background: var(--card); border:1px solid #ddd; border-radius:14px; padding:20px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.05); width:100%; max-width:250px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px; margin-top:20px;
+  justify-items: center; align-items: start;
+}
+.card {
+  background: var(--card); border:1px solid #ddd;
+  border-radius:14px; padding:20px; text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  display:flex; flex-direction:column; justify-content:space-between;
+}
 .card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
 .small-img { width:150px; height:auto; margin:auto; display:block; border-radius:5px; }
 
 
-.buy-section { display:flex; justify-content:center; align-items:center; gap:5px; margin-top:8px; }
-.btn-qty { width:40px; height:40px; border-radius:50%; border:none; background-color:#1e40af; color:white; font-size:24px; cursor:pointer; display:flex; justify-content:center; align-items:center; box-shadow:0 4px 6px rgba(0,0,0,0.2); transition:all 0.2s ease; }
+.buy-section {
+  display:flex; justify-content:center; align-items:center;
+  gap:5px; margin-top:8px; flex-wrap: wrap;
+}
+.btn-qty {
+  width:40px; height:40px; border-radius:50%;
+  border:none; background-color:#1e40af; color:white;
+  font-size:24px; cursor:pointer; display:flex;
+  justify-content:center; align-items:center;
+  box-shadow:0 4px 6px rgba(0,0,0,0.2);
+  transition:all 0.2s ease;
+}
 .btn-qty:hover { background-color:#2563eb; transform:scale(1.1); }
 .qty { font-size:20px; min-width:30px; text-align:center; }
-.btn-buy { background-color: var(--accent); color:white; padding:8px 16px; border:none; border-radius:50px; cursor:pointer; font-weight:600; box-shadow:0 4px 6px rgba(0,0,0,0.2); transition:all 0.2s ease; }
+.btn-buy {
+  background-color: var(--accent); color:white;
+  padding:8px 16px; border:none; border-radius:50px;
+  cursor:pointer; font-weight:600;
+  box-shadow:0 4px 6px rgba(0,0,0,0.2);
+  transition:all 0.2s ease;
+}
 .btn-buy:hover { background-color:#e36b00; transform:scale(1.05); }
 
 
 footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
-@media(max-width:900px){ .products { grid-template-columns: repeat(2,1fr); } }
-@media(max-width:600px){ .department-buttons { flex-direction: column; } .products { grid-template-columns: 1fr; } }
+
+
+.search-container {
+  display:flex; justify-content:center; align-items:center;
+  margin-top:20px; gap:8px;
+}
+#search-bar {
+  padding:10px; border:1px solid #ccc; border-radius:8px; width:70%;
+  font-size:16px;
+}
+#search-btn {
+  padding:10px 18px; background:var(--accent-2); color:white;
+  border:none; border-radius:8px; cursor:pointer; font-weight:600;
+}
+#search-btn:hover { background:var(--accent); }
 </style>
 </head>
 <body>
@@ -71,9 +145,8 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
         <div style="font-size:13px; color:var(--muted);">Todo en oficina y escolar</div>
       </div>
     </div>
-    <div class="cart-icon" onclick="toggleCart()">
-      🛒 Tu carrito
-      <div class="cart-count" id="cart-count">0</div>
+    <div class="cart-icon" onclick="toggleCart()">🛒 Tu carrito
+      <span id="contador-carrito">0</span>
     </div>
     <div id="cart-menu" class="cart-menu">
       <h3>🛍️ Carrito</h3>
@@ -87,7 +160,13 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   </header>
 
 
-  <!-- Botones departamentos -->
+  <!-- 🔍 Buscador -->
+  <div class="search-container">
+    <input type="text" id="search-bar" placeholder="Buscar producto...">
+    <button id="search-btn" onclick="buscarProducto()">Buscar</button>
+  </div>
+
+<!-- Botones departamentos -->
   <div class="department-buttons">
     <button class="active" onclick="showDepartment('arte',this)">Arte y Manualidades</button>
     <button onclick="showDepartment('escolar',this)">Escolar</button>
@@ -1780,33 +1859,18 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       </div>
     </div>
   </section>
+ 
 
 
-
-
-
-  <footer>
-    © 2025 Papelería FAT — Hecho con ❤️ en México
-  </footer>
+  <footer>© 2025 Papelería FAT — Hecho con ❤️ en México</footer>
 </div>
 
 
 <script>
-let cart=[];
-
-
-// Cargar carrito de localStorage al iniciar
-window.onload = function(){
-  const savedCart = localStorage.getItem('papeleriaCart');
-  if(savedCart){ cart = JSON.parse(savedCart); }
-  renderCart();
-  updateCartCount();
-};
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
 function toggleCart(){ document.getElementById('cart-menu').classList.toggle('active'); }
-
-
 function getQty(btn){ return parseInt(btn.parentElement.querySelector('.qty').innerText); }
 function increaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); qty.innerText=parseInt(qty.innerText)+1; }
 function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(parseInt(qty.innerText)>1) qty.innerText=parseInt(qty.innerText)-1; }
@@ -1814,18 +1878,17 @@ function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(p
 
 function addToCart(product,price,quantity=1){
   cart.push({product,price,quantity});
-  saveCart();
   renderCart();
-  updateCartCount();
 }
 
 
-function removeItem(index){ cart.splice(index,1); saveCart(); renderCart(); updateCartCount(); }
+function removeItem(index){ cart.splice(index,1); renderCart(); }
 
 
 function renderCart(){
   const cartItems=document.getElementById('cart-items');
   const cartTotal=document.getElementById('cart-total');
+  const contador=document.getElementById('contador-carrito');
   cartItems.innerHTML='';
   let total=0;
   cart.forEach((item,index)=>{
@@ -1840,6 +1903,9 @@ function renderCart(){
       </li>`;
   });
   cartTotal.innerText=`Total: $${total.toFixed(2)}`;
+  contador.innerText=cart.length;
+  contador.style.display = cart.length>0 ? 'inline' : 'none';
+  localStorage.setItem('cart',JSON.stringify(cart));
 }
 
 
@@ -1848,12 +1914,12 @@ function sendWhatsApp(){
   let message="🛒 *Pedido Papelería FAT*:%0A";
   cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
   const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
-  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 Envío o recoger en tienda`;
+  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
   window.open(`https://wa.me/5212321452268?text=${message}`,'_blank');
 }
 
 
-function emptyCart(){ if(cart.length===0){alert("Carrito vacío");return;} if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; saveCart(); renderCart(); updateCartCount();} }
+function emptyCart(){ if(cart.length===0){alert("Carrito vacío");return;} if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; renderCart();} }
 
 
 function showDepartment(id,btn){
@@ -1863,32 +1929,31 @@ function showDepartment(id,btn){
   btn.classList.add('active');
 }
 
-// Buscador de productos
-function filterProducts(){
-  const search = document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.products .card').forEach(card=>{
-    const name = card.getAttribute('data-name').toLowerCase();
-    if(name.includes(search)){ card.style.display='block'; } else { card.style.display='none'; }
-  });
+
+function buscarProducto(){
+  let input=document.getElementById('search-bar').value.toLowerCase().trim();
+  if(input==='') return;
+  let encontrado=false;
+  document.querySelectorAll('.products').forEach(depto=>{
+    depto.querySelectorAll('.card').forEach(card=>{
+      const nombre=card.querySelector('h3').innerText.toLowerCase();
+      if(nombre.includes(input)){
+        encontrado=true;
+        document.querySelectorAll('.products').forEach(s=>s.style.display='none');
+        depto.style.display='grid';
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  });
+  document.getElementById('search-bar').value=''; // borra texto después de buscar
 }
 
-  
-// Guardar carrito en localStorage
-function saveCart(){ localStorage.setItem('papeleriaCart',JSON.stringify(cart)); }
 
-
-// Actualizar contador del carrito
-function updateCartCount(){
-  const countDiv = document.getElementById('cart-count');
-  const totalQty = cart.reduce((sum,item)=>sum+item.quantity,0);
-  countDiv.innerText = totalQty;
-  countDiv.style.display = totalQty>0?'flex':'flex';
-}
+renderCart();
 </script>
-
-
 </body>
 </html>
+
 
 
 
