@@ -1863,19 +1863,15 @@ function showDepartment(id,btn){
   btn.classList.add('active');
 }
 
-
-function buscarProducto(){
-  const input = document.getElementById('search-bar').value.toLowerCase();
-  const products = document.querySelectorAll('.products .card');
-  products.forEach(card=>{
-    const nombre = card.querySelector('h3').innerText.toLowerCase();
-    if(nombre.includes(input)){
-      card.style.display='flex';
-    }else{
-      card.style.display='none';
-    }
+// Buscador de productos
+function filterProducts(){
+  const search = document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.products .card').forEach(card=>{
+    const name = card.getAttribute('data-name').toLowerCase();
+    if(name.includes(search)){ card.style.display='block'; } else { card.style.display='none'; }
   });
 }
+
   
 // Guardar carrito en localStorage
 function saveCart(){ localStorage.setItem('papeleriaCart',JSON.stringify(cart)); }
@@ -1893,6 +1889,7 @@ function updateCartCount(){
 
 </body>
 </html>
+
 
 
 
