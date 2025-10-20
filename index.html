@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papelería FAT — Compra tus productos</title>
+<style>
+:root {
+  --accent: #ff7b00;
+  --accent-2: #0056d2;
+  --bg: #f3f6fc;
+  --card: #fff;
+  --muted: #555;
+}
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family: "Poppins", sans-serif; background: var(--bg); color: #111; }
+.container { max-width: 1100px; margin:auto; padding:20px; }
+header { display:flex; justify-content:space-between; align-items:center; padding:12px 0; position: relative; }
+.logo { display:flex; align-items:center; gap:10px; }
+.logo .mark {
+  width:46px; height:46px; border-radius:8px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-2));
+  display:flex; justify-content:center; align-items:center;
+  color:white; font-weight:700;
+}
+.cart-icon {
+  cursor:pointer; background: var(--accent-2); color:white;
+  padding:10px 14px; border-radius:8px; font-weight:700; position:relative;
+}
+#contador-carrito {
+  position:absolute;
+  top:-5px; right:-8px;
+  background:#ff7b00;
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:50%;
+  display:none;
+}
+.cart-menu {
+  display:none; position:absolute; right:0; top:60px;
+  background:var(--card); border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.15);
+  width:300px; padding:15px; z-index:100;
+}
+.cart-menu.active { display:block; }
+.cart-menu h3 { color: var(--accent-2); margin-bottom:10px; text-align:center; }
+.cart-menu ul { list-style:none; max-height:200px; overflow-y:auto; padding:0; }
+.cart-menu li {
+  display:flex; justify-content:space-between; align-items:center;
+  margin:6px 0; border-bottom:1px dashed #ccc; padding-bottom:4px;
+}
+.cart-menu li button { background:none; border:none; color:#d11a2a; font-size:18px; cursor:pointer; }
+.cart-total { text-align:right; margin-top:8px; color: var(--accent); font-weight:700; }
+.cart-buttons { display:flex; gap:8px; margin-top:10px; flex-direction:column; }
+.cart-buttons .btn { background: var(--accent); color: white; border:none; padding:10px; border-radius:8px; font-weight:600; cursor:pointer; }
+.cart-buttons .btn.secondary { background:#aaa; }
+
+
+.department-buttons {
+  display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;
+}
+.department-buttons button {
+  padding:10px 16px; border:none; border-radius:8px; cursor:pointer; font-weight:600;
+  background: var(--accent-2); color:white;
+}
+.department-buttons button.active { background: var(--accent); }
+
+
+.department-title {
+  font-size:24px; color: var(--accent-2);
+  text-align:left; margin-bottom:16px;
+  border-bottom:2px solid var(--accent); padding-bottom:6px;
+}
+
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px; margin-top:20px;
+  justify-items: center; align-items: start;
+}
+.card {
+  background: var(--card); border:1px solid #ddd;
+  border-radius:14px; padding:20px; text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
+.small-img { width:150px; height:auto; margin:auto; display:block; border-radius:5px; }
+
+.price {
+  color: blue;      /* 💰 Color negro */
+  font-weight: 700; /* Negrita */
+}
+
+
+
+
+.buy-section {
+  display:flex; justify-content:center; align-items:center;
+  gap:5px; margin-top:8px; flex-wrap: wrap;
+}
+.btn-qty {
+  width:40px; height:40px; border-radius:50%;
+  border:none; background-color:black; color:white; /* Botones negros con texto blanco */
+  font-size:24px; cursor:pointer; display:flex;
+  justify-content:center; align-items:center;
+  box-shadow:0 4px 6px rgba(0,0,0,0.2);
+  transition:all 0.2s ease;
+}
+.btn-qty:hover { background-color:#333; transform:scale(1.1); }
+.qty { font-size:20px; min-width:30px; text-align:center; color:red; /* Número blanco */ }
+.btn-buy {
+  background-color: var(--accent); color:white;
+  padding:8px 16px; border:none; border-radius:50px;
+  cursor:pointer; font-weight:600;
+  box-shadow:0 4px 6px rgba(0,0,0,0.2);
+  transition:all 0.2s ease;
+}
+.btn-buy:hover { background-color:#e36b00; transform:scale(1.05); }
+
+
+footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
+
+
+.search-container {
+  display:flex; justify-content:center; align-items:center;
+  margin-top:20px; gap:8px;
+}
+#search-bar {
+  padding:10px; border:1px solid #ccc; border-radius:8px; width:70%;
+  font-size:16px;
+}
+#search-btn {
+  padding:10px 18px; background:var(--accent-2); color:white;
+  border:none; border-radius:8px; cursor:pointer; font-weight:600;
+}
+#search-btn:hover { background:var(--accent); }
+
+
+/* Estilo del bloque video + ofertas */
+.video-ofertas {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-top:20px;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.video-ofertas video { border-radius:12px; box-shadow:0 6px 12px rgba(0,0,0,0.2); width:100%; max-width:480px; height:auto; }
+.ofertas-texto {
+  background:red;
+  color:white;
+  font-weight:700;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  flex:1;
+  font-size:20px;
+}
+.ofertas-products {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas en escritorio */
+  gap:15px;
+  margin-top:15px;
+}
+.ofertas-products .card h3 span {
+  background:#ff0000; color:white; padding:3px 6px; font-size:12px; border-radius:6px; margin-left:8px;
+}
+.ofertas-products .card .description {
+  font-size:14px;
+  color:black; /* Descripción negra */
+  margin:5px 0;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .ofertas-products { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .video-ofertas { flex-direction: column; align-items:center; }
+  .ofertas-texto { width:100%; }
+  .ofertas-products { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="mark">PF</div>
+      <div>
+        <div style="font-weight:800; color:var(--accent-2);">Papelería FAT</div>
+        <div style="font-size:13px; color:var(--muted);">Todo en oficina y escolar</div>
+      </div>
+    </div>
+    <div class="cart-icon" onclick="toggleCart()">🛒 Tu carrito
+      <span id="contador-carrito">0</span>
+    </div>
+    <div id="cart-menu" class="cart-menu">
+      <h3>🛍️ Carrito</h3>
+      <ul id="cart-items"></ul>
+      <div class="cart-total" id="cart-total">Total: $0.00</div>
+      <div class="cart-buttons">
+        <button class="btn" onclick="sendWhatsApp()">Pagar por WhatsApp</button>
+        <button class="btn secondary" onclick="emptyCart()">Vaciar carrito</button>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Buscador -->
+  <div class="search-container">
+    <input type="text" id="search-bar" placeholder="Buscar producto...">
+    <button id="search-btn" onclick="buscarProducto()">Buscar</button>
+  </div>
+
+
+  
+  <!-- Video + Ofertas -->
+  <div class="video-ofertas">
+    <video controls loop>
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      Tu navegador no soporta video.
+    </video>
+    <div class="ofertas-texto">
+      Papelería Fast Ofertas
+      <div class="ofertas-products">
+        <!-- Producto 1 -->
+        <div class="card">
+          <img src="emoji.jpg alt="emoji"width="250">
+          <h3>Libreta Scribe Mexico Cuadro con 100 Hojas<span>Oferta</span></h3>
+          <div class="description">Libreta Scribe Mexico Cuadro con 100 Hojas</div>
+          <div class="price">$15.00</div>
+          <div class="buy-section">
+            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+            <div class="qty">1</div>
+            <button class="btn-qty" onclick="increaseQty(this)">+</button>
+            <button class="btn-buy" onclick="addToCart('Libreta Scribe Mexico Cuadro con 100 Hojas',15,getQty(this))">Comprar</button>
+          </div>
+        </div>
+        <!-- Producto 2 -->
+        <div class="card">
+          <img src=https://raw.githubusercontent.com/papeleriafast/com/81dcba481855f982587637d39b212e4f59e8abde/emoji.jpg
+          <h3>ibreta Scribe fulanitos cuadro con 100 Hojas<span>Oferta</span></h3>
+          <div class="description">Libreta Scribe fulanitos Cuadro con 100 Hojas</div>
+          <div class="price">$15.00</div>
+          <div class="buy-section">
+            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+            <div class="qty">1</div>
+            <button class="btn-qty" onclick="increaseQty(this)">+</button>
+            <button class="btn-buy" onclick="addToCart('Libreta Scribe fulanitos Cuadro con 100 Hojas',15,getQty(this))">Comprar</button>
+          </div>
+        </div>
+        <!-- Producto 3 -->
+        <div class="card">
+          <img src="file:///C:/Users/MARIO/Downloads/Imagen-de-WhatsApp-2025-10-19-a-las-16.51.05_c4c0b86b.webp">
+          <h3>Libreta Emoji Raya con 100 Hojas<span>Oferta</span></h3>
+          <div class="description">Libreta Scribe fulanitos Cuadro con 100 Hojas</div>
+          <div class="price">$15.00</div>
+          <div class="buy-section">
+            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+            <div class="qty">1</div>
+            <button class="btn-qty" onclick="increaseQty(this)">+</button>
+            <button class="btn-buy" onclick="addToCart('Libreta Emoji Raya con 100 Hojas',15,getQty(this))">Comprar</button>
+          </div>
+        </div>
+        <!-- Producto 4 -->
+          <div class="card">
+          <img src="file:///C:/Users/MARIO/Downloads/Imagen-de-WhatsApp-2025-10-19-a-las-16.51.05_8c71bedf.webp">
+          <h3>Libreta Swin mix Raya con 100 Hojas<span>Oferta</span></h3>
+          <div class="description">Libreta Swing Mix Raya Con 100 Hojas</div>
+          <div class="price">$15.00</div>
+          <div class="buy-section">
+            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+            <div class="qty">1</div>
+            <button class="btn-qty" onclick="increaseQty(this)">+</button>
+            <button class="btn-buy" onclick="addToCart('Libreta Swing Mix Raya con 100 Hojas',15,getQty(this))">Comprar</button>
+          </div>
+        </div>
+<!-- Producto 4 -->
+      </div>
+    </div>
+  </div>
+
+
+<!-- Botones departamentos -->
+  <div class="department-buttons">
+    <button class="active" onclick="showDepartment('arte',this)">Arte y Manualidades</button>
+    <button onclick="showDepartment('escolar',this)">Escolar</button>
+    <button onclick="showDepartment('oficina',this)">Oficina</button>
+    <button onclick="showDepartment('papel',this)">Papel</button>
+    <button onclick="showDepartment('regalos',this)">Regalos</button>
+  </div>
+
+
+
+
+<!-- Productos por departamento -->
+  <section id="arte" class="products">
+    <h2 class="department-title">🎨 Arte y Manualidades</h2>
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279285-1200-auto?v=638556536472700000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Rojo Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Rojo Smarty
+</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Rojo Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279290-1200-auto?v=638556536482770000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Carne Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Rosa Carne Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+       <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Carne Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279280-500-auto?v=638556536461370000&width=500&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Blanco Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Blanco Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Blanco Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279288-1200-auto?v=638556536478700000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Verde Oscuro Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Verde Oscuro Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Verde Oscuro Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279287-1200-auto?v=638556536476970000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Verde Claro Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Verde Claro Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Verde Claro Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279292-1200-auto?v=638556536486500000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Azul Cielo Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Azul Cielo Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Azul Cielo Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279281-1200-auto?v=638556536463700000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Café Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Café Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Café Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279283-1200-auto?v=638556536468200000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Naranja Smarty
+" class="small-img">
+      <h3>Plastilina Marqueta 180 g Naranja Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Naranja Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279279-1200-auto?v=638556536459630000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Azul Oscuro Smarty" class="small-img">
+      <h3>Plastilina Marqueta 180 g Azul Oscuro Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Azul Oscuro Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279277-1200-auto?v=638556536455370000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Amarillo Smarty" class="small-img">
+      <h3>Plastilina Marqueta 180 g Amarillo Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Amarillo Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279289-1200-auto?v=638556536480730000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Mprado Smarty" class="small-img">
+      <h3>Plastilina Marqueta 180 g  Morado Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Morado Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279289-1200-auto?v=638556536480730000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g rosado Smarty" class="small-img">
+      <h3>Plastilina Marqueta 180 g  Morado Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Morado Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279286-1200-auto?v=638556536474330000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Marqueta 180 g Rosado Smarty" class="small-img">
+      <h3>Plastilina Marqueta 180 g  Rosado Smarty</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Marqueta 180 g Rosado Smarty',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279275-1200-auto?v=638556536451000000&width=1200&height=auto&aspect=true
+       " alt="Plastilina Caja con 10 Barritas Smarty" class="small-img">
+      <h3>Plastilina Caja con 10 Barritas Smarty</h3>
+      <div class="price">$16.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Plastilina Caja con 10 Barritas Smarty',16,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277120-1200-auto?v=638556528066770000&width=1200&height=auto&aspect=true
+       " alt="Silicón Liquido Frasco con 100 ml Pelikan" class="small-img">
+      <h3>Silicón Liquido Frasco con 100 ml Pelikan</h3>
+      <div class="price">$32.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Silicón Liquido Frasco con 100 ml Pelikan',32,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277120-1200-auto?v=638556528066770000&width=1200&height=auto&aspect=true
+       " alt="Silicón Liquido Frasco con 250 ml Pelikan" class="small-img">
+      <h3>Silicón Liquido Frasco con 250 ml Pelikan</h3>
+      <div class="price">$56.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Silicón Liquido Frasco con 250 ml Pelikan',56,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276675-1200-auto?v=638556526331600000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Gris carta " class="small-img">
+      <h3>Fomy liso Gris carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Gris carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276688-1200-auto?v=638556526357470000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Blanco carta " class="small-img">
+      <h3>Fomy liso Blanco carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Blanco carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276692-1200-auto?v=638556526366230000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Naranja carta " class="small-img">
+      <h3>Fomy liso Naranja carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Naranja carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276671-1200-auto?v=638556526323230000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Cafe Oscuro carta " class="small-img">
+      <h3>Fomy liso Cafe Oscuro carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Cafe Oscuro carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276693-1200-auto?v=638556526368100000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Negro carta " class="small-img">
+      <h3>Fomy liso Negro carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Negro carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276671-1200-auto?v=638556526323230000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Cafe Oscuro carta " class="small-img">
+      <h3>Fomy liso Cafe Oscuro carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Cafe Oscuro carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276684-500-auto?v=638556526349200000&width=500&height=auto&aspect=true
+       " alt="Fomy liso Amarillo carta " class="small-img">
+      <h3>Fomy liso Amarillo carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Amarillo carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276686-500-auto?v=638556526353230000&width=500&height=auto&aspect=true
+       " alt="Fomy liso Azul Cielo carta " class="small-img">
+      <h3>Fomy liso Azul Cielo carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Azul Cielo carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276694-500-auto?v=638556526371230000&width=500&height=auto&aspect=true
+       " alt="Fomy liso Rojo carta " class="small-img">
+      <h3>Fomy liso Rojo carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Rojo carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276627-500-auto?v=638556526072900000&width=500&height=auto&aspect=true
+       " alt="Fomy liso Carne carta " class="small-img">
+      <h3>Fomy liso Carne carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Carne carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276690-1200-auto?v=638556526362700000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Rosa carta " class="small-img">
+      <h3>Fomy liso Rosa carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Rosa carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276677-1200-auto?v=638556526336300000&width=1200&height=auto&aspect=true
+       " alt="Fomy liso Morado carta " class="small-img">
+      <h3>Fomy liso Morado carta </h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy liso Morado carta ',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276715-1200-auto?v=638556526442230000&width=1200&height=auto&aspect=true
+       " alt="Fomy Diamantado Rojo carta " class="small-img">
+      <h3>Fomy Diamantado Rojo carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado rojo carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276697-500-auto?v=638556526377900000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Azul Cielo carta " class="small-img">
+      <h3>Fomy Diamantado Azul Cielo carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Azul Cielo carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276700-500-auto?v=638556526388000000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Azul Rey carta " class="small-img">
+      <h3>Fomy Diamantado Azul Rey carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Azul Rey carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276681-500-auto?v=638556526343700000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Rosa Claro carta " class="small-img">
+      <h3>Fomy Diamantado Rosa Claro carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Rosa Claro carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276710-1200-auto?v=638556526425270000&width=1200&height=auto&aspect=true
+       " alt="Fomy Diamantado Morado carta " class="small-img">
+      <h3>Fomy Diamantado Morado carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Morado carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276712-500-auto?v=638556526431770000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Negro carta " class="small-img">
+      <h3>Fomy Diamantado Negro carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Negro carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276714-500-auto?v=638556526439100000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Gris carta " class="small-img">
+      <h3>Fomy Diamantado Gris carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Gris carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276639-500-auto?v=638556526104700000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Amarillo carta " class="small-img">
+      <h3>Fomy Diamantado Amarillo carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Amarillo carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276767-500-auto?v=638556526570300000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Cafe carta " class="small-img">
+      <h3>Fomy Diamantado Cafe carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Cafe carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276711-500-auto?v=638556526428400000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Naranja carta " class="small-img">
+      <h3>Fomy Diamantado Naranja carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Naranja carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276718-500-auto?v=638556526452900000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Verde Bandera  carta " class="small-img">
+      <h3>Fomy Diamantado Verde Bandera carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Bandera carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276695-500-auto?v=638556526373430000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Verde limon  carta " class="small-img">
+      <h3>Fomy Diamantado Verde Limon carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Limon carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276701-500-auto?v=638556526390000000&width=500&height=auto&aspect=true
+       " alt="Fomy Diamantado Blanco  carta " class="small-img">
+      <h3>Fomy Diamantado Blanco carta </h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Fomy diamantado Blanco carta ',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277505-1200-auto?v=638556530142000000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Amarillo Medio Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Amarillo Medio Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Amarillo Medio Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277517-1200-auto?v=638556530168500000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Morado Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Morado Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Morado Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277511-1200-auto?v=638556530155830000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Verde Claro  Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Verde Claro Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Verde Claro Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+    
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277555-1200-auto?v=638556530413970000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Oro  Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Oro  Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Oro  Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277520-1200-auto?v=638556530174930000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml  Gris Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml  Gris Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml  Gris  Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277506-500-auto?v=638556530144000000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Azul Pastel Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Azul Pastel Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml  Azul Pastel Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277508-1200-auto?v=638556530148770000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Azul Ultramar Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Azul Ultramar Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Azul Ultramar Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/285972-500-auto?v=638640081051600000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Rojo Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Rojo Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Rojo Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277502-1200-auto?v=638556530135270000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Blanco Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Blanco Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Blanco Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277512-500-auto?v=638556530158800000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Verde Oscuro Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Verde Oscuro Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Verde Oscuro Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277521-500-auto?v=638556530177170000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Carne Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Carne Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Carne Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277516-500-auto?v=638556530166630000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Naranja Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Naranja Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Naranja Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277519-500-auto?v=638556530172270000&width=500&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Rosa Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Rosa Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Rosa Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277514-1200-auto?v=638556530162400000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Cafe Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Cafe Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Cafe Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277503-1200-auto?v=638556530137130000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 20 ml Negro Intenso  Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 20 ml Negro Intenso  Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 20 ml Negro Intenso Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277567-1200-auto?v=638556530444370000&width=1200&height=auto&aspect=true
+       " alt="Pintura Acrílica Frasco con 250 ml Blanco Politec" class="small-img">
+      <h3>Pintura Acrílica Frasco con 250 ml Blanco Politec</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pintura Acrílica Frasco con 250 ml Blanco Politec',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+
+
+  <section id="escolar" class="products" style="display:none;">
+    <h2 class="department-title">✏️ Escolar</h2>
+    <div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277006-500-auto?v=638556527595600000&width=500&height=auto&aspect=true" alt="Lápiz" class="small-img">
+      <h3>Goma Pelikan 60w</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Goma Pelikan',6,getQty(this))">Comprar</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/272603-1200-auto?v=638556507200830000&width=1200&height=auto&aspect=true" alt="Goma Factis" class="small-img">
+      <h3>Goma Factis</h3>
+      <div class="price">$10.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Goma Factis',10,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+ <div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279886-500-auto?v=638556538579730000&width=500&height=auto&aspect=true" alt="Goma Smarty" class="small-img">
+      <h3>Goma Smarty</h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Goma Smarty',5,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278268-1200-auto?v=638556532802370000&width=1200&height=auto&aspect=true" alt="Lapiz de dibujo 6B" class="small-img">
+      <h3>Lapiz de dibujo 6B</h3>
+      <div class="price">$10.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapiz de dibujo 6B',10,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278239-500-auto?v=638556532733200000&width=500&height=auto&aspect=true" alt="Lapiz de dibujo B" class="small-img">
+      <h3>Lapiz de dibujo B</h3>
+      <div class="price">$10.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapiz de dibujo B',10,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280254-1200-auto?v=638556539906570000&width=1200&height=auto&aspect=true" alt="Lápiz Bicolor Hexagonal mega" class="small-img">
+      <h3>Lápiz Bicolor Hexagonal mega</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápiz Bicolor Hexagonal mega',15,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279418-1200-auto?v=638556536925730000&width=1200&height=auto&aspect=true" alt="Lápiz Bicolor Hexagonal jumbo" class="small-img">
+      <h3>Lápiz Bicolor Hexagonal jumbo</h3>
+      <div class="price">$13.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápiz Bicolor Hexagonal jumbo',13,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279417-1200-auto?v=638556536922900000&width=1200&height=auto&aspect=true" alt="Lápiz Bicolor Hexagonal Delgado" class="small-img">
+      <h3>Lápiz Bicolor Hexagonal Delgado</h3>
+      <div class="price">$10.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápiz Bicolor Hexagonal delgado',10,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279425-1200-auto?v=638556536941500000&width=1200&height=auto&aspect=true" alt="Lápices de Colores Caja con 12 Piezas " class="small-img">
+      <h3>Lápices de Colores Caja con 12 Piezas </h3>
+      <div class="price">$55.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápices de Colores Caja con 12 Piezas ',55,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/275864-1200-auto?v=638556522775600000&width=1200&height=auto&aspect=true" alt="Lápices de Colores Caja con 12 Piezas Norma " class="small-img">
+      <h3>Lápices de Colores Caja con 12 Piezas Norma </h3>
+      <div class="price">$80.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápices de Colores Caja con 12 Piezas Norma ',80,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271731-1200-auto?v=638556503498700000&width=1200&height=auto&aspect=true
+" alt="Lápices de Colores Caja con 12 Piezas crayola " class="small-img">
+      <h3>Lápices de Colores Caja con 12 Piezas crayola </h3>
+      <div class="price">$86.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápices de Colores Caja con 12 Piezas crayola ',86,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277591-1200-auto?v=638556530504330000&width=1200&height=auto&aspect=true
+" alt="Lápices de Colores Caja con 12 Piezas Prisma Color " class="small-img">
+      <h3>Lápices de Colores Caja con 12 Piezas crayola </h3>
+      <div class="price">$90.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lápices de Colores Caja con 12 Piezas prisma color ',90,getQty(this))">Comprar</button>
+      </div>
+    </div> 
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279944-500-auto?v=638556538728530000&width=500&height=auto&aspect=true
+" alt="Crayola Smarty Mega " class="small-img">
+      <h3>Crayola Smarty Mega </h3>
+      <div class="price">$55.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Crayola Smarty Mega ',55,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="
+https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=638556554037470000&width=500&height=auto&aspect=true
+" alt="Lapicero Zebra Azul " class="small-img">
+      <h3>Lapicero zebra azul 1pz </h3>
+      <div class="price">$17.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero Zebra azul ',17,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/282168-500-auto?v=638556553898730000&width=500&height=auto&aspect=true
+       " alt="Lapicero Zebra Negro " class="small-img">
+      <h3>Lapicero zebra Negro 1pz </h3>
+      <div class="price">$17.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero Zebra Negro ',17,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278431-1200-auto?v=638556533327530000&width=1200&height=auto&aspect=true
+       " alt="Corrector Líquido Blanco Tipo Pluma  " class="small-img">
+      <h3>Corrector Líquido Blanco Tipo Pluma  </h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Corrector Líquido Blanco Tipo Pluma  ',25,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273464-1200-auto?v=638556511301270000&width=1200&height=auto&aspect=true
+       " alt="Cinta Adhesiva Transparente T119 de .18 x 33 m Janel" class="small-img">
+      <h3>Cinta Adhesiva Transparente T119 de .18 x 33 m Janel</h3>
+      <div class="price">$3.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cinta Adhesiva Transparente T119 de .18 x 33 m Janel',3,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271510-500-auto?v=638556502764370000&width=500&height=auto&aspect=true
+       " alt="Bully Liquido 55 g" class="small-img">
+      <h3>Bully Liquido 55 g</h3>
+      <div class="price">$20.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bully Liquido 55 g',20,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271512-500-auto?v=638556502769530000&width=500&height=auto&aspect=true
+       " alt="Bully Liquido 110 g" class="small-img">
+      <h3>Bully Liquido 110 g</h3>
+      <div class="price">$26.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bully Liquido 110 g',26,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271513-500-auto?v=638556502772200000&width=500&height=auto&aspect=true
+       " alt="Bully Liquido 225 g" class="small-img">
+      <h3>Bully Liquido 225 g</h3>
+      <div class="price">$38.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bully Liquido 225 g',38,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277374-500-auto?v=638556529066730000&width=500&height=auto&aspect=true
+       " alt="Lapicero negro pin point 0.7mm " class="small-img">
+      <h3>Lapicero negro pin point  0.7mm</h3>
+      <div class="price">$7.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero negro pin point 0.7mm',7,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277373-500-auto?v=638556529064700000&width=500&height=auto&aspect=true
+       " alt="Lapicero Azul pin point 0.7mm " class="small-img">
+      <h3>Lapicero Azul pin point  0.7mm</h3>
+      <div class="price">$7.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero Azul pin point 0.7mm',7,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277375-500-auto?v=638556529069170000&width=500&height=auto&aspect=true
+       " alt="Lapicero Rojo pin point 0.7mm " class="small-img">
+      <h3>Lapicero Rojo pin point  0.7mm</h3>
+      <div class="price">$7.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero Rojo pin point 0.7mm',7,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277386-500-auto?v=638556529096930000&width=500&height=auto&aspect=true
+       " alt="Lapicero Azul pin point 1.0mm " class="small-img">
+      <h3>Lapicero Azul pin point  1.0mm</h3>
+      <div class="price">$7.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapicero Azul pin point 1.0mm',7,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274214-1200-auto?v=638556516101030000&width=1200&height=auto&aspect=true
+       " alt="Bolígrafo Punto Mediano Retráctil Azul " class="small-img">
+      <h3>Bolígrafo Punto Mediano Retráctil Azul </h3>
+      <div class="price">$10.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bolígrafo Punto Mediano Retráctil Azul ',10,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274212-1200-auto?v=638556516095530000&width=1200&height=auto&aspect=true
+       " alt="Bolígrafo Cuatricolor  Kilometrico" class="small-img">
+      <h3>Bolígrafo Cuatricolor  Kilometrico</h3>
+      <div class="price">$37.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bolígrafo Cuatricolor  Kilometrico ',37,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271290-1200-auto?v=638556501960500000&width=1200&height=auto&aspect=true
+       " alt="Bolígrafo Punto Mediano Stick Negro" class="small-img">
+      <h3>Bolígrafo Punto Mediano Stick Negro</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bolígrafo Punto Mediano Stick Negro',6,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271288-1200-auto?v=638556501583400000&width=1200&height=auto&aspect=true
+       " alt="Bolígrafo Punto Mediano Stick Azul" class="small-img">
+      <h3>Bolígrafo Punto Mediano Stick Negro</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Bolígrafo Punto Mediano Stick Azul',6,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271520-1200-auto?v=638556502789270000&width=1200&height=auto&aspect=true
+       " alt="Pegamento Lápiz Adhesivo Tubo de 22 g" class="small-img">
+      <h3>Pegamento Lápiz Adhesivo Tubo de 22 g</h3>
+      <div class="price">$23.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pegamento Lápiz Adhesivo Tubo de 22 g',23,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271519-500-auto?v=638556502786270000&width=500&height=auto&aspect=true
+       " alt="Pegamento Lápiz Adhesivo Tubo de 11 g" class="small-img">
+      <h3>Pegamento Lápiz Adhesivo Tubo de 11 g</h3>
+      <div class="price">$13.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pegamento Lápiz Adhesivo Tubo de 11 g',13,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271981-1200-auto?v=638556504702300000&width=1200&height=auto&aspect=true
+       " alt="Pegamento Lápiz Adhesivo Tubo con 8 g" class="small-img">
+      <h3>Pegamento Lápiz Adhesivo Tubo con 8 g</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pegamento Lápiz Adhesivo Tubo con 8 g',8,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277777-1200-auto?v=638556531100700000&width=1200&height=auto&aspect=true
+       " alt="Pegamento de Contacto Resistol 5000 Tubo con 21 ml Resistol" class="small-img">
+      <h3>Pegamento de Contacto Resistol 5000 Tubo con 21 ml Resistol</h3>
+      <div class="price">$56.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Pegamento de Contacto Resistol 5000 Tubo con 21 ml Resistol',56,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271389-500-auto?v=638556502174070000&width=500&height=auto&aspect=true
+       " alt="Lapiz Maped " class="small-img">
+      <h3>Lapiz Maped</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Lapiz Maped',6,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277129-1200-auto?v=638556528082830000&width=1200&height=auto&aspect=true
+       " alt="Tijera Escolar de 5" Pulgadas Oreja Plástico Pelikan Azul" class="small-img">
+      <h3>Tijera Escolar de 5" Pulgadas Oreja Plástico Pelikan Azul</h3>
+      <div class="price">$16.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Tijera Escolar de 5" Pulgadas Oreja Plástico PelikaN Azul',16,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280074-1200-auto?v=638556539168230000&width=1200&height=auto&aspect=true
+       " alt="Compás Escolar de PlásticoLargo Smarty Morado" class="small-img">
+      <h3>Compás Escolar de Plástico Largo Smarty Morado</h3>
+      <div class="price">$30.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Compás Escolar de PlásticoLargo Smarty Morado',30,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280076-1200-auto?v=638556539176630000&width=1200&height=auto&aspect=true
+       " alt="Compás Escolar de PlásticoLargo Smarty Rosa" class="small-img">
+      <h3>Compás Escolar de Plástico Largo Smarty Rosa</h3>
+      <div class="price">$30.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Compás Escolar de PlásticoLargo Smarty Rosa',30,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277639-1200-auto?v=638556530623770000&width=1200&height=auto&aspect=true
+       " alt="Block Tamaño Carta con 50 Hojas Milimétrico Rayter" class="small-img">
+      <h3>Block Tamaño Carta con 50 Hojas Milimétrico Rayter</h3>
+      <div class="price">$40.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Block Tamaño Carta con 50 Hojas Milimétrico Rayter',40,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277639-1200-auto?v=638556530623770000&width=1200&height=auto&aspect=true
+       " alt="Hojas Milimétrico Rayter" class="small-img">
+      <h3>Hojas Milimétrico Rayter</h3>
+      <div class="price">$3.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Hojas Milimétrico Rayter',3,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280058-1200-auto?v=638556539125270000&width=1200&height=auto&aspect=true
+       " alt="Regla de Plástico de 30 cm Crystal Colors Rosa " class="small-img">
+      <h3>Regla de Plástico de 30 cm Crystal Colors Rosa</h3>
+      <div class="price">$12.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Regla de Plástico de 30 cm Crystal Colors Rosa',12,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280059-1200-auto?v=638556539127930000&width=1200&height=auto&aspect=true
+       " alt="Regla de Plástico de 30 cm Crystal Colors Verde" class="small-img">
+      <h3>Regla de Plástico de 30 cm Crystal Colors Verde</h3>
+      <div class="price">$12.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Compás Escolar de PlásticoLargo Smarty Verde',12,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280060-1200-auto?v=638556539130430000&width=1200&height=auto&aspect=true
+       " alt="Regla de Plástico de 30 cm Crystal Colors Azul" class="small-img">
+      <h3>Regla de Plástico de 30 cm Crystal Colors Azul</h3>
+      <div class="price">$12.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Compás Escolar de PlásticoLargo Smarty Azul',12,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280054-1200-auto?v=638556539117470000&width=1200&height=auto&aspect=true
+       " alt="Regla de Plástico de 30 cm Flexible verde" class="small-img">
+      <h3>Regla de Plástico de 30 cm Flexible Verde</h3>
+      <div class="price">$22.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Regla de Plástico de 30 cm Flexible Verde',22,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/280056-1200-auto?v=638556539121670000&width=1200&height=auto&aspect=true
+       " alt="Regla de Plástico de 30 cm Flexible Azul" class="small-img">
+      <h3>Regla de Plástico de 30 cm Flexible Azul </h3>
+      <div class="price">$22.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Regla de Plástico de 30 cm Flexible Azul',22,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273496-1200-auto?v=638556511380070000&width=1200&height=auto&aspect=true
+       " alt="Cinta Masking Tape 110 Plus de .12 x 50 m Janel" class="small-img">
+      <h3>Cinta Masking Tape 110 Plus de .12 x 50 m Janel</h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cinta Masking Tape 110 Plus de .12 x 50 m Janel',25,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273492-1200-auto?v=638556511371870000&width=1200&height=auto&aspect=true
+       " alt="Cinta Adhesiva Transparente de 48 x 50 m Janel" class="small-img">
+      <h3>Cinta Adhesiva Transparente  de 48 x 50 m Janel</h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cinta Adhesiva Transparente  de 48 x 50 m Janel',25,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273493-1200-auto?v=638556511373430000&width=1200&height=auto&aspect=true
+       " alt="Cinta Canela para Empaque de 48 x 50 m Janel" class="small-img">
+      <h3>Cinta Canela para Empaque de 48 x 50 m Janel</h3>
+      <div class="price">$27.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cinta Adhesiva Transparente de 48 x 50 m Janel',27,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273494-1200-auto?v=638556511375230000&width=1200&height=auto&aspect=true
+       " alt="Cinta Adhesiva Transparente para Empaque de .48 x 150 m Janel" class="small-img">
+      <h3>Cinta Adhesiva Transparente para Empaque de .48 x 150 m Janel</h3>
+      <div class="price">$65.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cinta Adhesiva Transparente para Empaque de .48 x 150 m Janel',65,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277649-1200-auto?v=638556530647130000&width=1200&height=auto&aspect=true
+       " alt="Tabular 4 columnas " class="small-img">
+      <h3>Tabular 4 columnas</h3>
+      <div class="price">$3.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Tabular 4 columnas',3,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277649-1200-auto?v=638556530647130000&width=1200&height=auto&aspect=true
+       " alt="Block Concepto 4 Columnas Tamaño Carta con 50 Hojas " class="small-img">
+      <h3>Block Concepto 4 Columnas Tamaño Carta con 50 Hojas</h3>
+      <div class="price">$76.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Block Concepto 4 Columnas Tamaño Carta con 50 Hojas',76,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/289355-1200-auto?v=638797501493200000&width=1200&height=auto&aspect=true
+       " alt="Hojas Perforadas para Carpeta Tamaño Carta de Cuadro Chico con 100 Hojas Scribe" class="small-img">
+      <h3>Hojas Perforadas para Carpeta Tamaño Carta de Cuadro Chico con 100 Hojas Scribe</h3>
+      <div class="price">$45.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Hojas Perforadas para Carpeta Tamaño Carta de Cuadro Chico con 100 Hojas Scribe',45,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/289353-1200-auto?v=638797501488030000&width=1200&height=auto&aspect=true
+       " alt="Hojas Perforadas para Carpeta Tamaño Carta de Raya con 100 Hojas Scribe" class="small-img">
+      <h3>Hojas Perforadas para Carpeta Tamaño Carta de Raya con 100 Hojas Scribe</h3>
+      <div class="price">$45.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Hojas Perforadas para Carpeta Tamaño Carta de Raya con 100 Hojas Scribe',45,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271400-1200-auto?v=638556502198270000&width=1200&height=auto&aspect=true
+       " alt="Álbum Cuerpos Geométricos para Armar 20 Piezas Bob" class="small-img">
+      <h3>Álbum Cuerpos Geométricos para Armar 20 Piezas Bob</h3>
+      <div class="price">$43.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Álbum Cuerpos Geométricos para Armar 20 Piezas Bob',43,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279594-1200-auto?v=638895181540300000&width=1200&height=auto&aspect=true
+       " alt="Libreta Cosido de 100 Hojas Profesional de Cuadro Chico Smarty Cosi" class="small-img">
+      <h3>Libreta Cosido de 100 Hojas Profesional de Cuadro Chico Smarty Cosi</h3>
+      <div class="price">$56.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Libreta Cosido de 100 Hojas Profesional de Cuadro Chico Smarty Cosi',56,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279588-1200-auto?v=638556537649730000&width=1200&height=auto&aspect=true
+       " alt="Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi" class="small-img">
+      <h3>Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi</h3>
+      <div class="price">$56.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi',56,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279591-1200-auto?v=638895181540130000&width=1200&height=auto&aspect=true
+       " alt="Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi" class="small-img">
+      <h3>Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi</h3>
+      <div class="price">$56.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Libreta Cosido de 100 Hojas Profesional de Cuadro Grande Smarty Cosi',56,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277698-1200-auto?v=638556530756670000&width=1200&height=auto&aspect=true
+       " alt="Libreta Espiral de 100 Hojas Francés Cuadro Grande Rayter" class="small-img">
+      <h3>Libreta Espiral de 100 Hojas Francés Cuadro Grande Rayter</h3>
+      <div class="price">$22.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Libreta Espiral de 100 Hojas Francés Cuadro Grande Rayter',22,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/277699-1200-auto?v=638556530759170000&width=1200&height=auto&aspect=true
+       " alt="Libreta Espiral de 100 Hojas Francés Raya Rayter" class="small-img">
+      <h3>Libreta Espiral de 100 Hojas Francés Raya Rayter</h3>
+      <div class="price">$22.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Libreta Espiral de 100 Hojas Francés Raya Rayter',22,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+
+
+  <section id="oficina" class="products" style="display:none;">
+    <h2 class="department-title">🏢 Oficina</h2>
+    
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278116-1600-auto?v=638556532237600000&width=1600&height" alt="Marcadores Sharpie Negro" class="small-img">
+      <h3>Marcadores Sharpie Negro</h3>
+      <div class="price">$23.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Marcadores Sharpie Negro',23,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278112-1200-auto?v=638556532227100000&width=1200&height=auto&aspect=true" alt="Marcadores Sharpie Azul" class="small-img">
+      <h3>Marcadores Sharpie Azul</h3>
+      <div class="price">$23.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Marcadores Sharpie Azul',23,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+
+
+  <div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271651-600-auto?v=638556503300600000&width=600&height=auto&aspect=true" alt="Marcador Azul Oscuro Colorella Pelikan" class="small-img">
+      <h3>Marcador Azul Oscuro Colorella Pelikan</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Marcador Azul Oscuro Colorella Pelikan',15,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271651-600-auto?v=638556503300600000&width=600&height=auto&aspect=true" alt="Marcador Para Colorear Grueso Negro Colorella Pelikan" class="small-img">
+      <h3>Marcador Para Colorear Grueso Negro Pelikan</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Colorear Grueso Negro',15,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271651-600-auto?v=638556503300600000&width=600&height=auto&aspect=true" alt="Marcador Para Colorear Grueso Rojo Colorella Pelikan" class="small-img">
+      <h3>Marcador Para Colorear Grueso Rojo Pelikan</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Colorear Grueso Rojo',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273929-1600-auto?v=638556514709430000&width=1600&height=auto&aspect=true" alt="Marcador Permanente Grueso Negro xtra" class="small-img">
+      <h3>Marcador Permanente Grueso Negro xtra</h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Permanente Grueso Negro xtra',25,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273927-500-auto?v=638556514704700000&width=500&height=auto&aspect=true" alt="Marcador Permanente Grueso Azul xtra" class="small-img">
+      <h3>Marcador Permanente Grueso Azul xtra</h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Permanente Grueso Azul xtra',25,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/276544-500-auto?v=638556525869530000&width=500&height=auto&aspect=true" alt="Marcador Permanente Grueso Rojo xtra" class="small-img">
+      <h3>Marcador Permanente Grueso Rojo xtra</h3>
+      <div class="price">$25.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Permanente Grueso Azul xtra',25,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274720-600-auto?v=638556517983100000&width=600&height=auto&aspect=true" alt="Marcador Para Pizarrón Grueso Rojo" class="small-img">
+      <h3>Marcador Para Pizarrón Grueso Rojo</h3>
+      <div class="price">$50.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Pizarrón Grueso Rojo',50,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274706-500-auto?v=638556517767200000&width=500&height=auto&aspect=true" alt="Marcador Para Pizarrón Grueso Azul" class="small-img">
+      <h3>Marcador Para Pizarrón Grueso Azul</h3>
+      <div class="price">$50.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Pizarrón Grueso Azul',50,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274699-500-auto?v=638556517746830000&width=500&height=auto&aspect=true" alt="Marcador Para Pizarrón Grueso Negro" class="small-img">
+      <h3>Marcador Para Pizarrón Grueso Negro</h3>
+      <div class="price">$50.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Pizarrón Grueso Negro',50,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273936-600-auto?v=638556514725200000&width=600&height=auto&aspect=true" alt="Marcador Para Pizarrón Grueso azul Esterbrook" class="small-img">
+      <h3>Marcador Para Pizarrón Grueso azul Esterbrook</h3>
+      <div class="price">$26.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Marcador Para Pizarrón Grueso azul Esterbrook',26,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>  
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278331-600-auto?v=638556533098530000&width=600&height=auto&aspect=true" alt="Folder de Cartulina Tamaño Carta Crema" class="small-img">
+      <h3>Folder de Cartulina Tamaño Carta Crema</h3>
+      <div class="price">$5.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder de Cartulina Tamaño Carta Crema',5,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278322-600-auto?v=638556533080830000&width=600&height=auto&aspect=true" alt="Folder de Cartulina Tamaño Carta Azul" class="small-img">
+      <h3>Folder de Cartulina Tamaño Carta azul</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder de Cartulina Tamaño Carta Azul',6,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278325-600-auto?v=638556533086470000&width=600&height=auto&aspect=true" alt="Folder de Cartulina Tamaño Carta Verde" class="small-img">
+      <h3>Folder de Cartulina Tamaño Carta Verde</h3>
+      <div class="price">$6.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder de Cartulina Tamaño Carta Verde',6,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274774-600-auto?v=638556518107200000&width=600&height=auto&aspect=true" alt="Sobre Bolsa Tamaño Carta" class="small-img">
+      <h3>Sobre Bolsa Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Sobre Bolsa Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274777-600-auto?v=638556518112430000&width=600&height=auto&aspect=true" alt="Sobre Bolsa Tamaño Oficio" class="small-img">
+      <h3>Sobre Bolsa Tamaño Oficio</h3>
+      <div class="price">$12.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Sobre Bolsa Tamaño oficio',12,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/274760-500-auto?v=638556518078730000&width=500&height=auto&aspect=true" alt="Sobre Bolsa Tamaño coin" class="small-img">
+      <h3>Sobre Bolsa Tamaño coin</h3>
+      <div class="price">$3.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Sobre Bolsa Tamaño oficio',3,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278412-500-auto?v=638556533284500000&width=500&height=auto&aspect=true" alt="Folder Morado Tamaño Carta" class="small-img">
+      <h3>Folder Morado Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Morado Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278410-600-auto?v=638556533279670000&width=600&height=auto&aspect=true" alt="Folder Ammarillo Tamaño Carta" class="small-img">
+      <h3>Folder Amarillo Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Amarillo Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278411-500-auto?v=638556533282000000&width=500&height=auto&aspect=true" alt="Folder Azul Tamaño Carta" class="small-img">
+      <h3>Folder Azul Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Azul Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271877-600-auto?v=638556504246730000&width=600&height=auto&aspect=true" alt="Folder Naranaja Tamaño Carta" class="small-img">
+      <h3>Folder Naranja Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Naranja Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278414-600-auto?v=638556533289370000&width=600&height=auto&aspect=true" alt="Folder Rojo Tamaño Carta" class="small-img">
+      <h3>Folder Rojo Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Rojo Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/271879-600-auto?v=638556504249370000&width=600&height=auto&aspect=true" alt="Folder Verde Oscuro Tamaño Carta" class="small-img">
+      <h3>Folder Verde Oscuro Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Verde Oscuro Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278415-600-auto?v=638556533292230000&width=600&height=auto&aspect=true" alt="Folder Verde limon Tamaño Carta" class="small-img">
+      <h3>Folder Verde limon  Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Verde limon Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278418-600-auto?v=638556533297970000&width=600&height=auto&aspect=true" alt="Folder Rosa Mexicano Tamaño Carta" class="small-img">
+      <h3>Folder Rosa Mexicano Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Rosa Mexicano Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+      <img src="https://storage.googleapis.com/imagen_producto/Imagenes_VTEX/06830107.jpg" alt="Folder Amarilo Neon Tamaño Carta" class="small-img">
+      <h3>Folder Amarilo Neon Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Amarilo Neon Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+<div class="card">
+  <img src=" https://tonypapelerias.vtexassets.com/arquivos/ids/271876-500-auto?v=638556504244830000&width=500&height=auto&aspect=true
+" alt="Folder Negro Tamaño Carta" class="small-img">
+      <h3>Folder Negro Tamaño Carta</h3>
+      <div class="price">$8.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder Folder Negro Tamaño Carta',8,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278785-1200-auto?v=638556534614430000&width=1200&height=auto&aspect=true" alt="Folder Costilla Negro Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Negro Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Negro Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div>  
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278790-500-auto?v=638556534632400000&width=500&height=auto&aspect=true
+" alt="Folder Costilla Azul cielo Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Azul cielo Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Azul cielo Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278676-1200-auto?v=638556534226470000&width=1200&height=auto&aspect=true
+" alt="Folder Costilla Azul Marino Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Azul cielo Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Azul Marino Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278695-500-auto?v=638556534267870000&width=500&height=auto&aspect=true
+" alt="Folder Costilla Naranja Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Naranja Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Naranja Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278675-500-auto?v=638556534224430000&width=500&height=auto&aspect=true
+" alt="Folder Costilla Amarillo Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Amarillo Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Amarillo Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278677-500-auto?v=638556534228200000&width=500&height=auto&aspect=true
+" alt="Folder Costilla Rojo Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Rojo Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Rojo Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+<div class="card">
+  <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/278677-500-auto?v=638556534228200000&width=500&height=auto&aspect=true
+" alt="PFolder Costilla Rojo Tamaño Carta" class="small-img">
+      <h3>Folder Costilla Rojo Tamaño Carta</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button> <div class="qty">1</div> <button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Folder  costilla Rojo Tamaña Carta',15,getQty(this))">Comprar</button>
+        
+      </div>
+    </div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
+
+
+  <section id="papel" class="products" style="display:none;">
+    <h2 class="department-title">📄 Papel</h2>
+    <div class="card">
+      <img src="https://cdn.pixabay.com/photo/2014/12/21/23/40/paper-575582_1280.png" alt="Papel Bond" class="small-img">
+      <h3>Papel Bond</h3>
+      <div class="price">$30.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Papel Bond',30,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="regalos" class="products" style="display:none;">
+    <h2 class="department-title">🎁 Regalos</h2>
+    <div class="card">
+      <img src="https://cdn.pixabay.com/photo/2017/03/27/13/46/gift-2170408_1280.png" alt="Set de regalo" class="small-img">
+      <h3>Set de regalo</h3>
+      <div class="price">$200.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+        <div class="qty">1</div>
+        <button class="btn-buy" onclick="addToCart('Set de regalo',200,getQty(this))">Comprar</button>
+        <button class="btn-qty" onclick="increaseQty(this)">+</button>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <footer>© 2025 Papelería FAT — Hecho con ❤️ en México</footer>
+</div>
+
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+
+function toggleCart(){ document.getElementById('cart-menu').classList.toggle('active'); }
+function getQty(btn){ return parseInt(btn.parentElement.querySelector('.qty').innerText); }
+function increaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); qty.innerText=parseInt(qty.innerText)+1; }
+function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(parseInt(qty.innerText)>1) qty.innerText=parseInt(qty.innerText)-1; }
+
+
+function addToCart(product,price,quantity=1){
+  cart.push({product,price,quantity});
+  renderCart();
+}
+
+
+function removeItem(index){ cart.splice(index,1); renderCart(); }
+
+
+function renderCart(){
+  const cartItems=document.getElementById('cart-items');
+  const cartTotal=document.getElementById('cart-total');
+  const contador=document.getElementById('contador-carrito');
+  cartItems.innerHTML='';
+  let total=0;
+  cart.forEach((item,index)=>{
+    total+=item.price*item.quantity;
+    cartItems.innerHTML+=`
+      <li>
+        <span>${item.product} x${item.quantity}</span>
+        <div>
+          <span>$${(item.price*item.quantity).toFixed(2)}</span>
+          <button onclick="removeItem(${index})">🗑️</button>
+        </div>
+      </li>`;
+  });
+  cartTotal.innerText=`Total: $${total.toFixed(2)}`;
+  contador.innerText=cart.length;
+  contador.style.display = cart.length>0 ? 'inline' : 'none';
+  localStorage.setItem('cart',JSON.stringify(cart));
+}
+
+
+function sendWhatsApp(){
+  if(cart.length===0){ alert('Tu carrito está vacío'); return; }
+  let message="🛒 *Pedido Papelería FAT*:%0A";
+  cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
+  const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
+  window.open(`https://wa.me/5212321452268?text=${message}`,'_blank');
+}
+
+
+function emptyCart(){ if(cart.length===0){alert("Carrito vacío");return;} if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; renderCart();} }
+
+
+function showDepartment(id,btn){
+  document.querySelectorAll('.products').forEach(sec=>sec.style.display='none');
+  document.getElementById(id).style.display='grid';
+  document.querySelectorAll('.department-buttons button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+
+function buscarProducto(){
+  let input=document.getElementById('search-bar').value.toLowerCase().trim();
+  if(input==='') return;
+  document.querySelectorAll('.products').forEach(depto=>{
+    depto.querySelectorAll('.card').forEach(card=>{
+      const nombre=card.querySelector('h3').innerText.toLowerCase();
+      if(nombre.includes(input)){
+        document.querySelectorAll('.products').forEach(s=>s.style.display='none');
+        depto.style.display='grid';
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  });
+  document.getElementById('search-bar').value=''; 
+}
+
+
+renderCart();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
