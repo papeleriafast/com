@@ -2800,10 +2800,12 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
+
 function toggleCart(){ document.getElementById('cart-menu').classList.toggle('active'); }
 function getQty(btn){ return parseInt(btn.parentElement.querySelector('.qty').innerText); }
 function increaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); qty.innerText=parseInt(qty.innerText)+1; }
 function decreaseQty(btn){ let qty=btn.parentElement.querySelector('.qty'); if(parseInt(qty.innerText)>1) qty.innerText=parseInt(qty.innerText)-1; }
+
 
 
 function addToCart(product,price,quantity=1){
@@ -2811,6 +2813,7 @@ function addToCart(product,price,quantity=1){
   renderCart();
 }
 function removeItem(index){ cart.splice(index,1); renderCart(); }
+
 
 
 function renderCart(){
@@ -2837,17 +2840,37 @@ function renderCart(){
 }
 
 
+
+// --- FUNCIÓN MODIFICADA PARA ENVIAR MENSAJE Y MÉTODOS DE PAGO ---
 function sendWhatsApp(){
   if(cart.length===0){ alert('Tu carrito está vacío'); return; }
+
+
+  // MENSAJE DEL PEDIDO
   let message="🛒 *Pedido Papelería FAT*:%0A";
-  cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
-  const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
-  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
-  window.open(`https://wa.me/5212321452268?text=${message}`,'_blank');
+  cart.forEach(i => message += `• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
+  const total = cart.reduce((sum,i) => sum + i.price*i.quantity, 0);
+  message += `%0A💰 *Total:* $${total.toFixed(2)}%0A📍 Recoger en tienda`;
+
+
+  const numero = "5212321452268"; // tu número con lada
+  window.open(`https://wa.me/${numero}?text=${message}`, '_blank');
+
+
+  // MENSAJE AUTOMÁTICO DE MÉTODO DE PAGO
+  setTimeout(() => {
+    const mensajePago = 
+      "💬 ¿Con qué método vas a pagar?%0A" +
+      "🔘 *Efectivo:* Pagar en tienda.%0A" +
+      "🔘 *Transferencia:* CLABE 123456789012345678";
+    window.open(`https://wa.me/${numero}?text=${mensajePago}`, '_blank');
+  }, 2000); // 2 segundos después
 }
 
 
+
 function emptyCart(){ if(cart.length===0){alert("Carrito vacío");return;} if(confirm("¿Seguro que quieres vaciar tu carrito?")){cart=[]; renderCart();} }
+
 
 
 function showDepartment(id,btn){
@@ -2856,6 +2879,7 @@ function showDepartment(id,btn){
   document.querySelectorAll('.department-buttons button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
+
 
 
 function buscarProducto(){
@@ -2875,10 +2899,48 @@ function buscarProducto(){
 }
 
 
+
 renderCart();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
