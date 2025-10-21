@@ -2856,27 +2856,19 @@ function sendWhatsApp(){
 
 
   const numero = "5212321452268";
-  // Mensaje del pedido
   let message="🛒 *Pedido Papelería FAT*:%0A";
   cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
   const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
   message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
 
 
-  // Abrir WhatsApp con mensaje de pedido
-  const urlPedido = `https://wa.me/${numero}?text=${message}`;
-  window.open(urlPedido,'_blank');
+  // Abrir WhatsApp
+  window.open(`https://wa.me/${numero}?text=${message}`,'_blank');
 
 
-  // Mensaje automático de método de pago en la misma ventana de WhatsApp
-  const mensajePago = 
-    "💬 *Método de pago*:%0A" +
-    "🔘 Efectivo: Pagar en tienda.%0A" +
-    "🔘 Transferencia: CLABE 123456789012345678";
-
-
-  // Abrimos con delay de 2s para que el usuario tenga tiempo de ver el pedido primero
-  setTimeout(() => { window.open(`https://wa.me/${numero}?text=${mensajePago}`, '_blank'); }, 2000);
+  // Vaciar carrito automáticamente después de enviar
+  cart = [];
+  renderCart();
 }
 
 
@@ -2916,6 +2908,7 @@ renderCart();
 </script>
 </body>
 </html>
+
 
 
 
