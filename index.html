@@ -90,12 +90,8 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 .card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
 .small-img { width:150px; height:auto; margin:auto; display:block; border-radius:5px; }
 
-.price {
-  color: blue;      /* 💰 Color negro */
-  font-weight: 700; /* Negrita */
-}
 
-
+.price { color: blue; font-weight: 700; }
 
 
 .buy-section {
@@ -104,14 +100,13 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 }
 .btn-qty {
   width:40px; height:40px; border-radius:50%;
-  border:none; background-color:black; color:white; /* Botones negros con texto blanco */
-  font-size:24px; cursor:pointer; display:flex;
+  border:none; background-color:black; color:white; font-size:24px; cursor:pointer; display:flex;
   justify-content:center; align-items:center;
   box-shadow:0 4px 6px rgba(0,0,0,0.2);
   transition:all 0.2s ease;
 }
 .btn-qty:hover { background-color:#333; transform:scale(1.1); }
-.qty { font-size:20px; min-width:30px; text-align:center; color:red; /* Número blanco */ }
+.qty { font-size:20px; min-width:30px; text-align:center; color:red; }
 .btn-buy {
   background-color: var(--accent); color:white;
   padding:8px 16px; border:none; border-radius:50px;
@@ -140,16 +135,22 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
 #search-btn:hover { background:var(--accent); }
 
 
-/* Estilo del bloque video + ofertas */
+/* Video + Ofertas */
 .video-ofertas {
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:flex-start;
   margin-top:20px;
   gap:20px;
   flex-wrap:wrap;
 }
-.video-ofertas video { border-radius:12px; box-shadow:0 6px 12px rgba(0,0,0,0.2); width:100%; max-width:480px; height:auto; }
+.video-ofertas video {
+  border-radius:12px;
+  box-shadow:0 6px 12px rgba(0,0,0,0.2);
+  width:100%;
+  max-width:480px;
+  height:auto;
+}
 .ofertas-texto {
   background:red;
   color:white;
@@ -162,7 +163,7 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
 }
 .ofertas-products {
   display:grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas en escritorio */
+  grid-template-columns: repeat(3, 1fr);
   gap:15px;
   margin-top:15px;
 }
@@ -171,15 +172,13 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
 }
 .ofertas-products .card .description {
   font-size:14px;
-  color:black; /* Descripción negra */
+  color:black;
   margin:5px 0;
 }
 
 
 /* Responsive */
-@media (max-width: 1024px) {
-  .ofertas-products { grid-template-columns: repeat(2, 1fr); }
-}
+@media (max-width: 1024px) { .ofertas-products { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) {
   .video-ofertas { flex-direction: column; align-items:center; }
   .ofertas-texto { width:100%; }
@@ -221,10 +220,9 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   </div>
 
 
-  
   <!-- Video + Ofertas -->
   <div class="video-ofertas">
-    <video controls loop>
+    <video autoplay loop muted playsinline>
       <source src="video.mp4" type="video/mp4">
       Tu navegador no soporta video.
     </video>
@@ -2644,24 +2642,7 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      
 
 
   <footer>© 2025 Papelería FAT — Hecho con ❤️ en México</footer>
@@ -2682,8 +2663,6 @@ function addToCart(product,price,quantity=1){
   cart.push({product,price,quantity});
   renderCart();
 }
-
-
 function removeItem(index){ cart.splice(index,1); renderCart(); }
 
 
@@ -2750,12 +2729,46 @@ function buscarProducto(){
 
 
 renderCart();
-
-
-
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
