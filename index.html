@@ -90,8 +90,8 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
   box-shadow:0 6px 18px rgba(0,0,0,0.05);
   display:flex; flex-direction:column; justify-content:space-between;
 }
-.card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
-.small-img { width:150px; height:auto; margin:auto; display:block; border-radius:5px; }
+.card img { width:160px; height:160px; object-fit:cover; border-radius:12px; }
+.small-img { width:160px; height:auto; margin:auto; display:block; border-radius:5px; }
 
 
 
@@ -159,6 +159,7 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   max-width:480px;
   height:auto;
 }
+
 .ofertas-texto {
   background:red;
   color:white;
@@ -168,12 +169,14 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   text-align:center;
   flex:1;
   font-size:20px;
-}
+
+} 
+
 .ofertas-products {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
-  gap:15px;
-  margin-top:15px;
+  gap:100px;
+  margin-top:100px;
 }
 .ofertas-products .card h3 span {
   background:#ff0000; color:white; padding:3px 6px; font-size:12px; border-radius:6px; margin-left:8px;
@@ -183,8 +186,6 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   color:black;
   margin:5px 0;
 }
-
-
 
 /* Responsive */
 @media (max-width: 1024px) { .ofertas-products { grid-template-columns: repeat(2, 1fr); } }
@@ -204,7 +205,7 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
     <div class="logo">
       <div class="mark">PF</div>
       <div>
-        <div style="font-weight:800; color:var(--accent-2);">Papelería FAT</div>
+        <div style="font-weight:800; color:var(--accent-2);">Papelería Fast</div>
         <div style="font-size:13px; color:var(--muted);">Todo en oficina y escolar</div>
       </div>
     </div>
@@ -309,13 +310,13 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
 <div class="card">
           <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/290574-1200-auto?v=638848275062830000&width=1200&height=auto&aspect=true">
           <h3><span>Oferta</span></h3>
-          <div class="description">Libreta de 100 Hojas Profesional de cuadro  Jean Books</div>
+          <div class="description">Libreta de 100 Hojas Profesional de Raya  Jean Books</div>
           <div class="price">$39.00</div>
           <div class="buy-section">
             <button class="btn-qty" onclick="decreaseQty(this)">-</button>
             <div class="qty">1</div>
             <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta de 100 Hojas Profesional de cuadro  Jean Books',39,getQty(this))">Comprar</button>
+            <button class="btn-buy" onclick="addToCart('Libreta de 100 Hojas Profesional de Raya  Jean Books',39,getQty(this))">Comprar</button>
           </div>
         </div>
 <!-- Producto 6 -->
@@ -1968,10 +1969,8 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       <h3>Marcadores Sharpie Negro</h3>
       <div class="price">$23.00</div>
       <div class="buy-section">
-        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-        <div class="qty">1</div>
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
         <button class="btn-buy" onclick="addToCart('Marcadores Sharpie Negro',23,getQty(this))">Comprar</button>
-        <button class="btn-qty" onclick="increaseQty(this)">+</button>
       </div>
     </div>
     <div class="card">
@@ -1979,10 +1978,8 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       <h3>Marcadores Sharpie Azul</h3>
       <div class="price">$23.00</div>
       <div class="buy-section">
-        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-        <div class="qty">1</div>
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
         <button class="btn-buy" onclick="addToCart('Marcadores Sharpie Azul',23,getQty(this))">Comprar</button>
-        <button class="btn-qty" onclick="increaseQty(this)">+</button>
       </div>
     </div>
 
@@ -1992,10 +1989,8 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       <h3>Marcador Azul Oscuro Colorella Pelikan</h3>
       <div class="price">$15.00</div>
       <div class="buy-section">
-        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-        <div class="qty">1</div>
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
         <button class="btn-buy" onclick="addToCart('Marcador Azul Oscuro Colorella Pelikan',15,getQty(this))">Comprar</button>
-        <button class="btn-qty" onclick="increaseQty(this)">+</button>
       </div>
     </div>
 
@@ -2004,10 +1999,8 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       <h3>Marcador Para Colorear Grueso Negro Pelikan</h3>
       <div class="price">$15.00</div>
       <div class="buy-section">
-        <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-        <div class="qty">1</div>
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
         <button class="btn-buy" onclick="addToCart('Marcador Para Colorear Grueso Negro',15,getQty(this))">Comprar</button>
-        <button class="btn-qty" onclick="increaseQty(this)">+</button>
       </div>
     </div>
 
@@ -2733,7 +2726,6 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
 
 
 
-
 <div class="card">
       <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273780-1200-auto?v=638556514162370000&width=1200&height=auto&aspect=true" class="small-img">
       <h3>Cartulina Cascaron Blanco de 1/8 (28 x 35 cm)</h3>
@@ -2741,6 +2733,17 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
         <button class="btn-buy" onclick="addToCart('Cartulina Cascaron Blanco de 1/8 (28 x 35 cm)',10,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+
+<div class="card">
+      <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/273781-1200-auto?v=638556514164700000&width=1200&height=auto&aspect=true" class="small-img">
+      <h3>Cartulina Cascaron Blanco de 1/4 (35 x 56 cm)</h3>
+      <div class="price">$15.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('Cartulina Cascaron Blanco de 1/4 (35 x 56 cm)',15,getQty(this))">Comprar</button>
       </div>
     </div>
 
@@ -2856,10 +2859,11 @@ function sendWhatsApp(){
 
 
   const numero = "5212321452268";
-  let message="🛒 *Pedido Papelería FAT*:%0A";
+  let message="🛒 *Pedido Papelería Fast*:%0A";
   cart.forEach(i=>message+=`• ${i.product} x${i.quantity} - $${(i.price*i.quantity).toFixed(2)}%0A`);
   const total=cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
-  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda`;
+  message+=`%0A💰 *Total:* $${total.toFixed(2)}%0A📍 recoger en tienda%0A%0A💬 ¿Con qué método vas a pagar?%0A*Efectivo*:%0A Pagar En Tienda%0A🔘*Transefrencia*:%0ABBVA CLABE:2313213131313%0AMercado Pago:23214214214234324 `;
+
 
 
   // Abrir WhatsApp
@@ -2908,6 +2912,164 @@ renderCart();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
