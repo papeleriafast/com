@@ -38,6 +38,17 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
   border-radius:50%;
   display:none;
 }
+  /* FONDO GIF ANIMADO DE HALLOWEEN */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://i.pinimg.com/originals/f6/72/ce/f672ce953801e8bb44132d5c938c4f85.gif') center center / cover no-repeat;
+  z-index: -2;
+  opacity: 0.4; /* Puedes ajustar la opacidad si quieres más o menos visible */
+}
 .cart-menu {
   display:none; position:absolute; right:0; top:60px;
   background:var(--card); border-radius:12px;
@@ -2907,6 +2918,7 @@ renderCart();
 </script>
 </body>
 </html>
+
 
 
 
