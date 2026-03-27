@@ -163,40 +163,6 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   height:auto;
 }
 
-.ofertas-texto {
-  background:red;
-  color:white;
-  font-weight:700;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  flex:1;
-  font-size:20px;
-
-} 
-
-.ofertas-products {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:100px;
-  margin-top:100px;
-}
-.ofertas-products .card h3 span {
-  background:#ff0000; color:white; padding:3px 6px; font-size:12px; border-radius:6px; margin-left:8px;
-}
-.ofertas-products .card .description {
-  font-size:14px;
-  color:black;
-  margin:5px 0;
-}
-
-/* Responsive */
-@media (max-width: 1024px) { .ofertas-products { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) {
-  .video-ofertas { flex-direction: column; align-items:center; }
-  .ofertas-texto { width:100%; }
-  .ofertas-products { grid-template-columns: 1fr; }
-}
 </style>
 </head>
 <body>
@@ -238,132 +204,10 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   <!-- Video + Ofertas -->
   <div class="video-ofertas">
     <video autoplay loop muted playsinline>
-      <source src="video.mp4" type="video/mp4">
+      <source src="videoo.mp4" type="video/mp4">
       Tu navegador no soporta video.
     </video>
-    <div class="ofertas-texto">
-      Papelería Fast Ofertas
-      <div class="ofertas-products">
-        <!-- Producto 1 -->
-        <div class="card">
-          <img src="libmexico.jpg" alt="Libmexico" width="200">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta Scribe Mexico Cuadro con 100 Hojas</div>
-          <div class="price">$15.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta Scribe Mexico Cuadro con 100 Hojas',15,getQty(this))">Comprar</button>
-          </div>
-        </div>
-        <!-- Producto 2 -->
-        <div class="card">
-           <img src="funailtos.jpg" alt="Funailtos" width="200">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta Scribe funailtos Cuadro con 100 Hojas </div>
-          <div class="price">$15.00</div> 
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta Scribe funailtos Cuadro con 100 Hojas',15,getQty(this))">Comprar</button>
-          </div>
-        </div>
-        <!-- Producto 3 -->
-        <div class="card">
-          <img src="emoji.jpg" alt="Emoji" width="200">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta Emoji Cuadro con 100 Hojas</div>
-          <div class="price">$15.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta Emoji Raya con 100 Hojas',15,getQty(this))">Comprar</button>
-          </div>
-        </div>
-        <!-- Producto 4 -->
-          <div class="card">
-          <img src="swing.jpg" alt="Swing" width="200">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta Swing Mix Raya Con 100 Hojas</div>
-          <div class="price">$15.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta Swing Mix Raya con 100 Hojas',15,getQty(this))">Comprar</button>
-          </div>
-        </div>
-<!-- Producto 4 -->
-<div class="card">
-          <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/290573-1200-auto?v=638848275059100000&width=1200&height=auto&aspect=true">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta de 100 Hojas Profesional de cuadro  Jean Books</div>
-          <div class="price">$39.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta de 100 Hojas Profesional de cuadro  Jean Books',39,getQty(this))">Comprar</button>
-          </div>
-        </div>
-<!-- Producto 5 -->
-<div class="card">
-          <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/290574-1200-auto?v=638848275062830000&width=1200&height=auto&aspect=true">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta de 100 Hojas Profesional de Raya  Jean Books</div>
-          <div class="price">$39.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta de 100 Hojas Profesional de Raya  Jean Books',39,getQty(this))">Comprar</button>
-          </div>
-        </div>
-<!-- Producto 6 -->
-<div class="card">
-          <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/290572-1200-auto?v=638848275052670000&width=1200&height=auto&aspect=true">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta de 200 Hojas Profesional de Raya  Jean Books</div>
-          <div class="price">$175.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta de 200 Hojas Profesional de Raya  Jean Books',175,getQty(this))">Comprar</button>
-          </div>
-        </div>
-<!-- Producto 7 -->
-<div class="card">
-          <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/279397-1200-auto?v=638556536877770000&width=1200&height=auto&aspect=true">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Cuaderno Espiral Aguilucho con 50 Hojas Smarty</div>
-          <div class="price">$36.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Cuaderno Espiral Aguilucho con 50 Hojas Smarty',36,getQty(this))">Comprar</button>
-          </div>
-        </div>
-<!-- Producto 8 -->
-<div class="card">
-          <img src="https://tonypapelerias.vtexassets.com/arquivos/ids/281061-1200-auto?v=638556546973930000&width=1200&height=auto&aspect=true">
-          <h3><span>Oferta</span></h3>
-          <div class="description">Libreta Espiral de 100 Hojas Profesional Blanco Swing Mix</div>
-          <div class="price">$10.00</div>
-          <div class="buy-section">
-            <button class="btn-qty" onclick="decreaseQty(this)">-</button>
-            <div class="qty">1</div>
-            <button class="btn-qty" onclick="increaseQty(this)">+</button>
-            <button class="btn-buy" onclick="addToCart('Libreta Espiral de 100 Hojas Profesional Blanco Swing Mix',10,getQty(this))">Comprar</button>
-          </div>
-        </div>
       </div>
-    </div>
-  </div>
 
 
 <!-- Botones departamentos -->
@@ -372,7 +216,7 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
     <button onclick="showDepartment('escolar',this)">Escolar</button>
     <button onclick="showDepartment('oficina',this)">Oficina</button>
     <button onclick="showDepartment('papel',this)">Papel</button>
-    <button onclick="showDepartment('regalos',this)">Regalos</button>
+    <button onclick="showDepartment('accesorios',this)">Accesorios</button>
   </div>
 
 
@@ -2828,39 +2672,72 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </section>
 
 
-   <section id="regalos" class="products" style="display:none;">
-    <h2 class="department-title">🎁 Regalos</h2>
-    <div class="card">
-      
-      <h3>PROXIMA ACTUALIZACION</h3>
+   <section id="accesorios" class="products" style="display:none;">
+    <h2 class="department-title">📱 Accesorios</h2>
+    
+   <div class="card">
+     <img src="imageniphone.jpeg"class="small-img">
+      <h3>CARGADOR IPHONE 20W </h3>
+      <div class="price">$180.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('CARGADOR IPHONE 20W',20,getQty(this))">Comprar</button>
+      </div>
+    </div>
+   
+<div class="card">
+     <img src="audifnosv.jpeg"class="small-img">
+      <h3>AUDÍFONOS MANOS LIBRES VMEX T/C</h3>
+      <div class="price">$70.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('AUDÍFONOS MANOS LIBRES VMEX T/C TP03',20,getQty(this))">Comprar</button>
+      </div>
+    </div>
+
+  <div class="card">
+     <img src="cable.jpeg"class="small-img">
+      <h3>CABLE 1HORA USB/LIGHTNING 1M</h3>
+      <div class="price">$80.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/LIGHTNING 1M',20,getQty(this))">Comprar</button>
+      </div>
+    </div>   
+
+ <div class="card">
+     <img src="cablev.jpeg"class="small-img">
+      <h3>CABLE 1HORA USB/TIPO C 1M</h3>
+      <div class="price">$75.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/TIPO C 1M',20,getQty(this))">Comprar</button>
+      </div>
+    </div>    
+
+<div class="card">
+     <img src="air.jpeg"class="small-img">
+      <h3>AIRPODS 4TA GEN OEM</h3>
+      <div class="price">$400.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('AIRPODS 4TA GEN OEM',20,getQty(this))">Comprar</button>
+      </div>
+    </div>  
+
+<div class="card">
+     <img src="usb.jpeg"class="small-img">
+      <h3>USB ADATA 32</h3>
+      <div class="price">$150.00</div>
+      <div class="buy-section">
+        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
+        <button class="btn-buy" onclick="addToCart('USB ADATA 32GB ',20,getQty(this))">Comprar</button>
+      </div>
+    </div>  
+
       
   </section>
      
