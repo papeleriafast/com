@@ -56,7 +56,12 @@ header { display:flex; justify-content:space-between; align-items:center; paddin
 }
 .cart-menu li button { background:none; border:none; color:#d11a2a; font-size:18px; cursor:pointer; }
 .cart-total { text-align:right; margin-top:8px; color: var(--accent); font-weight:700; }
-.cart-buttons { display:flex; gap:8px; margin-top:10px; flex-direction:column; }
+.cart-buttons { 
+  display:flex; 
+  gap:8px; 
+  margin-top:10px; 
+  flex-direction: row; /* 🔥 ahora en horizontal */
+}
 .cart-buttons .btn { background: var(--accent); color: white; border:none; padding:10px; border-radius:8px; font-weight:600; cursor:pointer; }
 .cart-buttons .btn.secondary { background:#aaa; }
 
@@ -161,6 +166,134 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   width:100%;
   max-width:480px;
   height:auto;
+}
+/* 🔥 BOTÓN CARRITO FIJO PERO ALINEADO AL CONTENEDOR */
+.cart-icon {
+  position: fixed !important;
+  top: 48px;
+  
+  left: 51%;
+  transform: translateX(430px); /* 🔥 ajusta según tu diseño */
+
+  z-index: 2000;
+}
+
+/* 🔥 MENÚ TAMBIÉN ALINEADO */
+.cart-menu {
+  position: fixed !important;
+  top: 70px;
+
+  left: 50%;
+  transform: translateX(430px);
+
+  z-index: 2000;
+}
+
+.qty-control {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:120px;
+  background:#eef2f7; /* gris clarito */
+  padding:6px;
+  border-radius:30px; /* 🔥 forma de pastilla */
+}
+
+/* BOTONES REDONDOS SUAVES */
+.btn-qty {
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  color:#333;
+  font-size:18px;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  transition:all 0.2s ease;
+}
+
+.btn-qty:hover {
+  background:#ddd;
+  transform:scale(1.05);
+}
+
+/* NÚMERO CENTRADO */
+.qty {
+  font-size:16px;
+  font-weight:600;
+  color:#333;
+  min-width:20px;
+  text-align:center;
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f1f3f4;
+  border-radius:15px;
+  padding:12px;
+  margin-bottom:10px;
+}
+
+/* INFO */
+.cart-info h4{
+  margin:0;
+  font-size:14px;
+  font-weight:600;
+}
+
+.cart-sub{
+  margin:2px 0;
+  font-size:11px;
+  color:#9e9e9e;
+}
+
+.cart-price{
+  color:#7CB342; /* verde bonito */
+  font-weight:bold;
+  font-size:14px;
+}
+
+/* ACCIONES */
+.cart-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* CONTROL DE CANTIDAD */
+.qty-control{
+  display:flex;
+  align-items:center;
+  background:#e0e0e0;
+  border-radius:20px;
+  padding:3px 8px;
+}
+
+.btn-qty{
+  border:none;
+  background:none;
+  font-size:16px;
+  cursor:pointer;
+  width:25px;
+  height:25px;
+}
+
+.qty{
+  font-size:14px;
+  margin:0 5px;
+}
+
+/* BOTÓN ELIMINAR */
+.delete-btn{
+  border:none;
+  background:none;
+  cursor:pointer;
+  font-size:16px;
 }
 
 </style>
@@ -2672,6 +2805,31 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
     </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </section>
 
 
@@ -2680,61 +2838,61 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
     
    <div class="card">
      <img src="imageniphone.jpeg"class="small-img">
-      <h3>Cargador Iphone 20W </h3>
+      <h3>CARGADOR IPHONE 20W </h3>
       <div class="price">$180.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('CARGADOR IPHONE 20W',180,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('CARGADOR IPHONE 20W',20,getQty(this))">Comprar</button>
       </div>
     </div>
    
 <div class="card">
      <img src="audifnosv.jpeg"class="small-img">
-      <h3>Audífonos Manos Libres Vmex T/C</h3>
+      <h3>AUDÍFONOS MANOS LIBRES VMEX T/C</h3>
       <div class="price">$70.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('AUDÍFONOS MANOS LIBRES VMEX T/C TP03',70,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('AUDÍFONOS MANOS LIBRES VMEX T/C TP03',20,getQty(this))">Comprar</button>
       </div>
     </div>
 
   <div class="card">
      <img src="cable.jpeg"class="small-img">
-      <h3>Cable 1Hora Usb/Lightning 1M</h3>
+      <h3>CABLE 1HORA USB/LIGHTNING 1M</h3>
       <div class="price">$80.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/LIGHTNING 1M',80,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/LIGHTNING 1M',20,getQty(this))">Comprar</button>
       </div>
     </div>   
 
  <div class="card">
      <img src="cablev.jpeg"class="small-img">
-      <h3>Cable 1Hora Usb/Tipo C 1M</h3>
+      <h3>CABLE 1HORA USB/TIPO C 1M</h3>
       <div class="price">$75.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/TIPO C 1M',75,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('CABLE 1HORA USB/TIPO C 1M',20,getQty(this))">Comprar</button>
       </div>
     </div>    
 
 <div class="card">
      <img src="air.jpeg"class="small-img">
-      <h3>Airpods 4ta Gen Oem</h3>
+      <h3>AIRPODS 4TA GEN OEM</h3>
       <div class="price">$400.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('AIRPODS 4TA GEN OEM',400,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('AIRPODS 4TA GEN OEM',20,getQty(this))">Comprar</button>
       </div>
     </div>  
 
 <div class="card">
      <img src="usb.jpeg"class="small-img">
-      <h3>Usb Adata 32gb</h3>
+      <h3>USB ADATA 32</h3>
       <div class="price">$150.00</div>
       <div class="buy-section">
         <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('USB ADATA 32GB ',150,getQty(this))">Comprar</button>
+        <button class="btn-buy" onclick="addToCart('USB ADATA 32GB ',20,getQty(this))">Comprar</button>
       </div>
     </div>  
 
@@ -2749,6 +2907,19 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
 
 
 <script>
+window.changeQty = function(index, change){
+  if(!cart[index]) return;
+
+  cart[index].quantity += change;
+
+  // Si baja a 0, se elimina
+  if(cart[index].quantity <= 0){
+    cart.splice(index,1);
+  }
+
+  renderCart();
+}
+
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 
@@ -2772,24 +2943,45 @@ function renderCart(){
   const cartItems=document.getElementById('cart-items');
   const cartTotal=document.getElementById('cart-total');
   const contador=document.getElementById('contador-carrito');
+
   cartItems.innerHTML='';
   let total=0;
+
   cart.forEach((item,index)=>{
     total+=item.price*item.quantity;
+
     cartItems.innerHTML+=`
-      <li>
-        <span>${item.product} x${item.quantity}</span>
-        <div>
-          <span>$${(item.price*item.quantity).toFixed(2)}</span>
-          <button onclick="removeItem(${index})">🗑️</button>
+      <div class="cart-item">
+
+        <div class="cart-info">
+          <h4>${item.product}</h4>
+          <p class="cart-sub"></p>
+          <span class="cart-price">$${item.price.toFixed(2)}</span>
         </div>
-      </li>`;
+
+        <div class="cart-actions">
+
+          <div class="qty-control">
+            <button class="btn-qty" onclick="changeQty(${index}, -1)">−</button>
+            <div class="qty">${item.quantity}</div>
+            <button class="btn-qty" onclick="changeQty(${index}, 1)">+</button>
+          </div>
+
+          <button class="delete-btn" onclick="removeItem(${index})">🗑️</button>
+
+        </div>
+
+      </div>
+    `;
   });
+
   cartTotal.innerText=`Total: $${total.toFixed(2)}`;
   contador.innerText=cart.length;
   contador.style.display = cart.length>0 ? 'inline' : 'none';
+
   localStorage.setItem('cart',JSON.stringify(cart));
 }
+
 
 
 
