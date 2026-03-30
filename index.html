@@ -167,16 +167,40 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
   max-width:480px;
   height:auto;
 }
-/* 🔥 BOTÓN CARRITO FIJO PERO ALINEADO AL CONTENEDOR */
+/* 🔥 BOTÓN CARRITO FIJO */
 .cart-icon {
   position: fixed !important;
   top: 48px;
-  
-  left: 51%;
-  transform: translateX(430px); /* 🔥 ajusta según tu diseño */
-
+  left: 50%;
+  transform: translateX(430px);
   z-index: 2000;
 }
+
+/* 📱 TABLET */
+@media (max-width: 1024px) {
+  .cart-icon {
+    transform: translateX(300px);
+  }
+}
+
+/* 📱 CELULAR */
+@media (max-width: 768px) {
+  .cart-icon {
+    top: 15px;
+    left: auto;
+    right: 15px;
+    transform: none; /* 🔥 lo quitamos para que no se rompa */
+  }
+}
+
+/* 📱 CELULAR PEQUEÑO */
+@media (max-width: 480px) {
+  .cart-icon {
+    top: 10px;
+    right: 10px;
+  }
+}
+
 
 /* 🔥 MENÚ TAMBIÉN ALINEADO */
 .cart-menu {
@@ -3043,51 +3067,6 @@ renderCart();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
