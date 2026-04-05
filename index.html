@@ -381,6 +381,27 @@ footer { text-align:center; margin-top:40px; padding:16px; color:#777; }
 
 }
 
+  .card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.oferta {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: linear-gradient(45deg, #ff0000, #b30000);
+  color: white;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  letter-spacing: 1px;
+}
+
+
 </style>
 </head>
 <body>
@@ -3042,15 +3063,21 @@ https://tonypapelerias.vtexassets.com/arquivos/ids/282176-500-auto?v=63855655403
      <section id="regalos" class="products" style="display:none;">
     <h2 class="department-title">🎁 Regalos</h2>
 
-<div class="card">
-     <img src="regalomo.jpeg"class="small-img">
-      <h3>Bolsa De Regalo Mosaico </h3>
-      <div class="price">$10.00</div>
-      <div class="buy-section">
-        <button class="btn-qty" onclick="decreaseQty(this)">-</button><div class="qty">1</div><button class="btn-qty" onclick="increaseQty(this)">+</button>
-        <button class="btn-buy" onclick="addToCart('Bolsa De Regalo Mosaico ',10,getQty(this))">Comprar</button>
-      </div>
-    </div>  
+  <div class="card">
+  <div class="oferta">OFERTA</div>
+
+  <img src="regalomo.jpeg" class="small-img">
+  <h3>Bolsa De Regalo Mosaico </h3>
+  <div class="price">$10.00</div>
+
+  <div class="buy-section">
+    <button class="btn-qty" onclick="decreaseQty(this)">-</button>
+    <div class="qty">1</div>
+    <button class="btn-qty" onclick="increaseQty(this)">+</button>
+    <button class="btn-buy" onclick="addToCart('Bolsa De Regalo Mosaico ',10,getQty(this))">Comprar</button>
+  </div>
+</div>
+
 
 <div class="card">
      <img src="regalochhbalon.jpeg"class="small-img">
