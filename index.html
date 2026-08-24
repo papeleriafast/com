@@ -76,7 +76,6 @@ body{
 /* =====================================================
    🔥 HEADER PREMIUM
 ===================================================== */
-
 header{
 
   position:sticky;
@@ -104,93 +103,64 @@ header{
   0 15px 40px rgba(0,0,0,.08);
 
 }
-
-/* LOGO */
-
-.logo{
-
-  display:flex;
-  align-items:center;
-
-  gap:15px;
-}
-
-.logo img{
-
-  width:60px;
-  height:60px;
-
-  border-radius:18px;
-
-  object-fit:cover;
-
-  box-shadow:
-  0 10px 20px rgba(0,0,0,.1);
-}
-
-.logo div{
-
-  line-height:1.2;
-}
-
-.logo div div:first-child{
-
-  font-size:28px;
-  font-weight:900;
-
-  color:var(--primary);
-}
-
-.logo div div:last-child{
-
-  color:var(--muted);
-
-  font-size:14px;
-}
-
 /* =====================================================
    🛒 BOTÓN CARRITO PREMIUM
+===================================================== */
+/* =====================================================
+   🛒 BOTÓN CARRITO — HEADER SIN ESTRECHAR
 ===================================================== */
 
 .cart-icon{
 
-  position:fixed !important;
+  position:relative !important;
 
-  top:20px;
-  right:25px;
+  top:auto;
+  right:auto;
+
+  flex-shrink:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:230px;
+
+  padding:16px 28px;
 
   background:
   linear-gradient(
-  135deg,
-  var(--primary),
-  var(--secondary)
+    135deg,
+    var(--primary),
+    var(--secondary)
   );
 
   color:white;
 
-  padding:16px 24px;
-
   border-radius:50px;
 
+  font-size:22px;
   font-weight:700;
 
   cursor:pointer;
 
-  z-index:3000;
+  z-index:10;
 
   transition:.35s ease;
 
   box-shadow:
-  0 15px 35px rgba(0,0,0,.2);
+  0 15px 35px rgba(0,0,0,.20);
 
+  white-space:nowrap;
 }
 
 .cart-icon:hover{
 
   transform:
-  translateY(-4px)
-  scale(1.03);
+  translateY(-3px)
+  scale(1.02);
 
+  box-shadow:
+  0 20px 40px rgba(0,0,0,.25);
 }
 /* =====================================================
    🛒 CARRITO PREMIUM PRO
@@ -1119,41 +1089,71 @@ header{
 
 @media(max-width:768px){
 
-.buy-section{
+  header{
 
-  gap:10px;
+    gap:12px;
+
+    padding:12px 15px;
+
+  }
+
+  .logo{
+
+    min-width:0;
+    flex:1;
+
+  }
+
+  .logo img{
+
+    width:50px;
+    height:50px;
+
+  }
+
+  .logo div{
+
+    min-width:0;
+
+  }
+
+  .logo div div:first-child{
+
+    font-size:20px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+  }
+
+  .logo div div:last-child{
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+  }
+
+  .cart-icon{
+
+    min-width:auto;
+
+    padding:13px 18px;
+
+    font-size:16px;
+
+    flex-shrink:0;
+
+  }
+
 }
-
-.qty-control{
-
-  gap:12px;
-
-  padding:8px 14px;
-}
-
-.btn-qty{
-
-  width:34px;
-  height:34px;
-
-  font-size:20px;
-}
-
-.qty{
-
-  font-size:20px;
-}
-
-.btn-buy{
-
-  padding:12px 20px;
-
-  font-size:16px;
-}
-
-}
-
-
 
 /* =====================================================
    🛒 COMPRAR
