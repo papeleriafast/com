@@ -5397,7 +5397,7 @@ function showDepartment(id, btn){
    🔍 BUSCADOR PREMIUM
 ===================================================== */
 
-function buscarProducto(){ 
+ function buscarProducto(){ 
  
   let input = 
   document.getElementById('search-bar') 
@@ -5424,28 +5424,20 @@ function buscarProducto(){
  
         encontrado = true; 
  
-        // Ocultar todos los productos
-        document.querySelectorAll('.card').forEach(producto => {
-          producto.style.display = 'none';
-        });
-
-        // Mostrar solamente el producto encontrado
-        card.style.display = '';
-
-        // Mostrar la sección donde está el producto
-        document.querySelectorAll('.products').forEach(sec => {
-          sec.style.display = 'none';
-        });
-
-        depto.style.display = 'grid';
-
-        // Ir al producto
+        document.querySelectorAll('.products') 
+        .forEach(sec => { 
+ 
+          sec.style.display = 'none'; 
+ 
+        }); 
+ 
+        depto.style.display = 'grid'; 
+ 
         card.scrollIntoView({ 
           behavior:'smooth', 
           block:'center' 
         }); 
  
-        // Animación
         card.style.animation = 
         'pulse 1s'; 
  
@@ -5466,7 +5458,8 @@ function buscarProducto(){
   document.getElementById('search-bar') 
   .value = ''; 
  
-}
+} 
+quiero que este igual mi codigo solo quiero que le modifues que solo selecione el proucto del buscador 
 /* =====================================================
    🔔 NOTIFICACIÓN PREMIUM
 ===================================================== */
