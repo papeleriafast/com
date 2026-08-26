@@ -5397,26 +5397,75 @@ function showDepartment(id, btn){
    🔍 BUSCADOR PREMIUM
 ===================================================== */
 
-function buscarProducto() {
-  const texto = document.getElementById("search-bar").value
-    .toLowerCase()
-    .trim();
+function buscarProducto(){ 
+ 
+  let input = 
+  document.getElementById('search-bar') 
+  .value 
+  .toLowerCase() 
+  .trim(); 
+ 
+  if(input === '') return; 
+ 
+  let encontrado = false; 
+ 
+  document.querySelectorAll('.products') 
+  .forEach(depto => { 
+ 
+    depto.querySelectorAll('.card') 
+    .forEach(card => { 
+ 
+      const nombre = 
+      card.querySelector('h3') 
+      .innerText 
+      .toLowerCase(); 
+ 
+      if(nombre.includes(input)){ 
+ 
+        encontrado = true; 
+ 
+        // Ocultar todos los productos
+        document.querySelectorAll('.card').forEach(producto => {
+          producto.style.display = 'none';
+        });
 
-  const productos = document.querySelectorAll(".card");
+        // Mostrar solamente el producto encontrado
+        card.style.display = '';
 
-  productos.forEach(producto => {
-    const nombre = producto.querySelector("h3");
+        // Mostrar la sección donde está el producto
+        document.querySelectorAll('.products').forEach(sec => {
+          sec.style.display = 'none';
+        });
 
-    if (!nombre) return;
+        depto.style.display = 'grid';
 
-    const nombreProducto = nombre.textContent.toLowerCase();
-
-    if (texto === "" || nombreProducto.includes(texto)) {
-      producto.style.display = "";
-    } else {
-      producto.style.display = "none";
-    }
-  });
+        // Ir al producto
+        card.scrollIntoView({ 
+          behavior:'smooth', 
+          block:'center' 
+        }); 
+ 
+        // Animación
+        card.style.animation = 
+        'pulse 1s'; 
+ 
+      } 
+ 
+    }); 
+ 
+  }); 
+ 
+  if(!encontrado){ 
+ 
+    alert( 
+      'Producto no encontrado 😢' 
+    ); 
+ 
+  } 
+ 
+  document.getElementById('search-bar') 
+  .value = ''; 
+ 
 }
 /* =====================================================
    🔔 NOTIFICACIÓN PREMIUM
