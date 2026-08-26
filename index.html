@@ -5397,69 +5397,27 @@ function showDepartment(id, btn){
    🔍 BUSCADOR PREMIUM
 ===================================================== */
 
-function buscarProducto(){
+function buscarProducto() {
+  const texto = document.getElementById("search-bar").value
+    .toLowerCase()
+    .trim();
 
-  let input =
-  document.getElementById('search-bar')
-  .value
-  .toLowerCase()
-  .trim();
+  const productos = document.querySelectorAll(".card");
 
-  if(input === '') return;
+  productos.forEach(producto => {
+    const nombre = producto.querySelector("h3");
 
-  let encontrado = false;
+    if (!nombre) return;
 
-  document.querySelectorAll('.products')
-  .forEach(depto => {
+    const nombreProducto = nombre.textContent.toLowerCase();
 
-    depto.querySelectorAll('.card')
-    .forEach(card => {
-
-      const nombre =
-      card.querySelector('h3')
-      .innerText
-      .toLowerCase();
-
-      if(nombre.includes(input)){
-
-        encontrado = true;
-
-        document.querySelectorAll('.products')
-        .forEach(sec => {
-
-          sec.style.display = 'none';
-
-        });
-
-        depto.style.display = 'grid';
-
-        card.scrollIntoView({
-          behavior:'smooth',
-          block:'center'
-        });
-
-        card.style.animation =
-        'pulse 1s';
-
-      }
-
-    });
-
+    if (texto === "" || nombreProducto.includes(texto)) {
+      producto.style.display = "";
+    } else {
+      producto.style.display = "none";
+    }
   });
-
-  if(!encontrado){
-
-    alert(
-      'Producto no encontrado 😢'
-    );
-
-  }
-
-  document.getElementById('search-bar')
-  .value = '';
-
 }
-
 /* =====================================================
    🔔 NOTIFICACIÓN PREMIUM
 ===================================================== */
